@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        let aa = [11,22,33];
+        aa = { name:'小白' };  // let 声明的变量可以重新赋值，原本的地址会比覆盖
+
+        let bb = function(){}
+
+        let cc = aa;    // 引用类型的赋值是内存地址的赋值
+        cc.age = 18;    // cc 添加 aa 也会添加
+
+        console.log('aa',aa);
+        console.log('bb',bb);
+        console.log('cc',cc);
+
+
+        // 把一个数组对象赋值给常量 dd，其实是把数组的内存地址赋值给dd
+        const dd = [];
+
+        // 点语法，是根据内存地址访问对象
+        dd.push(66);            // 👌 通过点语法引用地址添加的
+        // dd = [666];          // ❌等号重新赋值就报错，常量不允许重新赋值
+
+        console.log(dd);        // [666]
+        
+
+
+
+        
+
+    </script>
+</body>
+</html>

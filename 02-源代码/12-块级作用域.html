@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 3. let 拥有块级作用域 - ES6->let const
+
+        // for 循环语句块级作用域
+        // for (let i = 0; i < 5; i++) {
+        //     console.log(`输出i的值`, i);
+        // }
+        // console.log(i);  // 报错：i is not defined
+        // 报错原因：let 声明的 i 只在for循环结构的 {} 中生效，块级作用域
+
+
+        // // var aa;
+        // if 分支语句块级作用域
+        // if(true){
+        //     let aa = 10;
+        //     console.log(aa);
+        // }
+        // console.log(aa);    // 报错：aa is not defined
+
+        // var bb;
+        // {} 也有独立块级作用域
+        {
+            let bb = 10;
+            console.log(bb);
+        }
+        console.log(bb);     // 报错：bb is not defined
+        
+
+
+
+    </script>
+</body>
+</html>

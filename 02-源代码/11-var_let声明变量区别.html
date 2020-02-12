@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // var aa;
+
+        // console.log(aa);    // undefined
+        // console.log(bb);    // 报错：无法在初始化 bb 前使用它(属于写法不规范的报错)
+
+        // aa = 10;
+        // let bb = 11;
+
+        // 区别1.  let 不会预解析
+        // var 的预解析容易给程序埋下祸根。
+        // let 不会预解析，代码和书写顺序一样，从上往下执行。
+
+
+
+        // 区别2. let 在同一个作用域不允许重复声明
+        // let cc = 10;
+        // // 中间有很多其他代码
+        // let cc = 20;    // 报错：已声明变量标识符'cc'
+
+
+        // 区别3. let 拥有块级作用域
+        // var i;
+        // for (i = 0; i < 5; i++) {
+        //     console.log(`输出i的值`, i);
+        // }
+        // i < 5 是循环条件，第一个不满足循环条件的时候 i 是多少
+        // console.log(i);     // 5，其实这个 i 在外面是无意义的
+        
+        
+        // 块级作用域
+        for (let i = 0; i < 5; i++) {
+            console.log(`输出i的值`, i);
+        }
+
+        console.log(i);     // 报错：i 没有定义，
+        // 报错原因：let 声明的 i 只在for循环结构的 {} 中生效，块级作用域
+
+
+
+    </script>
+</body>
+
+</html>
