@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        // Person 构造函数
+        function Person1(name, age, height) {
+            this.name = name;
+            this.age = age;
+            this.height = height;
+        }
+
+        // Person 原型对象
+        Person1.prototype.run = function(){
+            console.log(`${this.name}能跑`);
+        }
+
+
+        // ES6 类语法
+        class Person2{
+            // constructor 构造函数的意思
+            constructor(name, age, height){
+                this.name = name;
+                this.age = age;
+                this.height = height;
+            }
+            // 以下书写的方法，都会自动添加到原型对象上
+            run(){
+                console.log(`${this.name}能跑`);
+            }
+        }
+
+        // 创建对象的时候用法一样
+        const p1 = new Person1('小红',18,'160cm');
+        const p2 = new Person2('小王',20,'170cm');
+
+        console.log(p1);
+        console.log(p2);
+        
+
+
+
+    </script>
+</body>
+</html>
