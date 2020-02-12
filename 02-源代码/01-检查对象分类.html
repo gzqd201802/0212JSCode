@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 组合继承由两部分组成：
+        //      1. 借用构造函数继承
+        //      2. 原型链继承
+
+        // Person 构造函数
+        function Person(name, age, height) {
+            this.name = name;
+            this.age = age;
+            this.height = height;
+        }
+
+        // Person 构造函数的方法
+        Person.prototype.run = function () { 
+            console.log(`${this.name}能跑。`);
+        }
+
+        Person.prototype.sayHi = function () { 
+            console.log(`${this.name}能 SayHi`);
+        }
+
+        // Student 构造函数
+        function Student(name, age, height, number) {
+            // 1. 借用构造函数继承
+            Person.call(this, name, age, height);
+            // 在继承属性后再添加其他属性
+            this.number = number;
+        }
+
+        // 2. 原型链继承
+        Student.prototype = new Person();
+        Student.prototype.constructor = Student;
+
+        // 在继承原型方法后后再 Student.prototype 添加其他的方法
+        Student.prototype.code = function(){
+            console.log(`${this.name}能写代码`);
+        }
+
+        // 以下代码为测试组合继承结果准备的
+        // new Student() 通过组合继承，分别继承了 Person 的属性和方法
+        const s1 = new Student('小米',18,'160cm',22);
+        console.log(s1);
+
+        // 检查对象属于某个分类
+        //  解决方案：通过实例对象的.__proto__.constructor
+
+
+        console.log(s1.__proto__.constructor === Student); // true
+        // s1 对象是属于 Student 这类对象
+        
+
+    </script>
+</body>
+</html>

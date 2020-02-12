@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+
+        // Person 构造函数
+        function Person(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        const o1 = [11, 22];
+        const o2 = new Person('小明', 18);
+
+        console.log(o1);      // Array [11, 22]
+        console.log(o2);      // Person {name: "小明", age: 18}
+
+        console.log(`o1是否为Array这类对象`, o1 instanceof Array); // true
+
+        console.log(`o2是否为Array这类对象`, o2 instanceof Array); // false
+
+        // instanceof 价值：用于检测实例对象的分类
+        // 为什么需要检测对象的分类？
+        //   因为不同分类的对象，能调用的方法是不一样的。
+        //   如：Person 这类对象不能调用数组Array这类对象的方法。
+
+
+    </script>
+</body>
+
+</html>
