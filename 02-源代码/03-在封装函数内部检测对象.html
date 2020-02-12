@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        function func(o) {
+            // 检测参数的数据类型，是数组才能掉数组的方法
+            if (o instanceof Array) {
+                console.log('执行数组连接', o.join('||'));
+            } else {
+                console.log('传入数据不是数组',o);
+            }
+        }
+
+        let obj1 = ['刘备', '关羽', '蔡徐坤'];
+        let obj2 = { aa: 11, bb: 22 };
+
+        func(obj1); // 执行数组连接     刘备|关羽|蔡徐坤
+        func(obj2); // 传入数据不是数组 {aa: 11, bb: 22}
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        // 基本类型
+        let data1 = '123';
+        let data2 = 123;
+        let data3 = true;
+        let data4 = null;
+        let data5 = undefined;
+
+        // 引用类型(复杂类型, 对象)
+        let data6 = function(){}
+        let data7 = [];
+        let data8 = {};
+        let data9 = new Date();
+
+        // typeof 用于检测 基本数据类型 和 函数
+        // instanceof 用于检测复杂类型中的对象分类
+
+        console.log(typeof data1);   // 'string'
+        console.log(typeof data2);   // 'number'
+        console.log(typeof data3);   // 'boolean'
+        console.log(typeof data4);   // 'object' - JS早期设计的bug
+        console.log(typeof data5);   // 'undefined'
+
+        console.log(typeof data6);   // 'function'
+
+        // typeof 检测对象统一返回了 object，函数这类对象除外
+        console.log(typeof data7);   // 'object'
+        console.log(typeof data8);   // 'object'
+        console.log(typeof data9);   // 'object'
+        
+
+    </script>
+</body>
+</html>

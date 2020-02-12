@@ -49,13 +49,13 @@
         const s1 = new Student('小米',18,'160cm',22);
         console.log(s1);
 
-        // 检查对象属于某个分类
-        //  解决方案：通过实例对象的.__proto__.constructor
-
-
-        console.log(s1.__proto__.constructor === Student); // true
-        // s1 对象是属于 Student 这类对象
         
+        console.log(s1 instanceof Student);  // true 
+        console.log(s1 instanceof Person);   // true 
+        console.log(s1 instanceof Object);   // true 
+        console.log(s1 instanceof Array);    // false 
+        
+      
 
     </script>
 </body>
