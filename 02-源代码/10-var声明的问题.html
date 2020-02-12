@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 函数表达式其实由两部分组成  var fn2 = function(){}
+        //      1. var fn2;             1. 声明变量
+        //      2. fn2 = function(){}   2. 把函数的创建并把地址赋值给 fn2
+        //  var fn2 声明变量的过程，JS解析器会优先读取并提升。
+        var fn2;
+        fn2();      // 报错，fn2 is not a function (fn2不是函数)
+        fn2 = function(){
+            alert('函数fn2被调用了');
+        }
+
+    </script>
+</body>
+</html>
