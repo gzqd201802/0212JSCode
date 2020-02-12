@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<!-- saved from url=(0073)https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management -->
+<html lang="zh-CN" dir="ltr" class=""><head prefix="og: http://ogp.me/ns#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <script async="" src="./内存管理 - JavaScript _ MDN_files/analytics.js.下载"></script><script>(function(d) { d.className = d.className.replace(/\bno-js/, ''); })(document.documentElement);</script>
+  <title>内存管理 - JavaScript | MDN</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  
+<link rel="preload" href="https://developer.mozilla.org/static/fonts/locales/ZillaSlab-Regular.f9de6143fdfa.woff2" as="font" type="font/woff2" crossorigin="">
+    <link rel="home" href="https://developer.mozilla.org/zh-CN/">
+    <link rel="license" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management#license">
+  
+
+  
+    
+    
+
+    <link href="./内存管理 - JavaScript _ MDN_files/mdn.75dd423db392.css" rel="stylesheet" type="text/css">
+
+    
+  
+
+    <link href="./内存管理 - JavaScript _ MDN_files/wiki.733560e8e110.css" rel="stylesheet" type="text/css">
+
+
+    
+
+  <link href="./内存管理 - JavaScript _ MDN_files/locale-zh-CN.f6594de96c23.css" rel="stylesheet" type="text/css">
+
+  
+    <script type="text/javascript" src="./内存管理 - JavaScript _ MDN_files/mozilla-dnthelper.3936bd979b1d.js.下载" charset="utf-8"></script>
+    
+
+<script>
+    // only load GA if DNT is not enabled
+    if (Mozilla && !Mozilla.dntEnabled()) {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-36116321-5', 'mozilla.org');
+        ga('set', 'anonymizeIp', true);
+
+        
+
+        // dimension9 == "Section editing"
+        
+            // dimension12 == 'Page Revision'
+            ga('set', 'dimension12', '1354165');
+            // dimension17 == 'English Slug'
+            ga('set', 'dimension17', 'Web/JavaScript/Memory_Management');
+
+        (function() {
+            // http://cfsimplicity.com/61/removing-analytics-clutter-from-campaign-urls
+            var win = window;
+            var removeUtms = function(){
+                var location = win.location;
+                if (location.href.indexOf('utm') != -1 && win.history.replaceState) {
+                    win.history.replaceState({}, '', location.pathname);
+                }
+            };
+
+            ga('send', 'pageview', {'hitCallback': removeUtms});
+        })();
+    }
+</script>
+
+  
+    <!-- common social tags -->
+    
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.72382e605ce3.png">
+    <meta property="og:site_name" content="MDN Web 文档">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://developer.mozilla.org/static/img/opengraph-logo.72382e605ce3.png">
+    <meta name="twitter:site" content="@MozDevNet">
+    <meta name="twitter:creator" content="@MozDevNet">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://developer.mozilla.org/zh-CN/search/xml" title="MDN Web 文档">
+  
+
+  <!-- third-generation iPad with high-resolution Retina display: -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://developer.mozilla.org/static/img/favicon144.e7e21ca263ca.png">
+  <!-- iPhone with high-resolution Retina display: -->
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://developer.mozilla.org/static/img/favicon114.d526f38b09c5.png">
+  <!-- first- and second-generation iPad: -->
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://developer.mozilla.org/static/img/favicon72.cc65d1d762a0.png">
+  <!-- non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+  <link rel="apple-touch-icon-precomposed" href="https://developer.mozilla.org/static/img/favicon57.de33179910ae.png">
+  <!-- basic favicon -->
+     <!-- basic favicon -->
+  
+    
+  
+  <link rel="shortcut icon" href="https://developer.mozilla.org/static/img/favicon32.7f3da72dcea1.png">
+  <!--[if IE]>
+  <meta http-equiv="imagetoolbar" content="no">
+  <script type="text/javascript" src="https://developer.mozilla.org/static/build/js/html5shiv.3948ccddab6f.js" charset="utf-8"></script>
+  <![endif]-->
+
+  
+  <link rel="dns-prefetch" href="https://interactive-examples.mdn.mozilla.net/" pr="0.75">
+  <link rel="preconnect" href="https://interactive-examples.mdn.mozilla.net/" pr="0.75">
+
+  <link rel="preload" href="https://interactive-examples.mdn.mozilla.net/js/codemirror-5-31-0.js" as="script">
+  <link rel="preload" href="https://interactive-examples.mdn.mozilla.net/js/editor-js.js" as="script">
+
+  <link rel="alternate" type="application/json" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management$json">
+  <link rel="canonical" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management">
+
+  
+  <link rel="alternate" hreflang="zh-CN" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management" title="内存管理">
+  
+    
+      <link rel="alternate" hreflang="en-US" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management" title="Memory Management">
+    
+      <link rel="alternate" hreflang="bn-BD" href="https://developer.mozilla.org/bn-BD/docs/Web/JavaScript/Memory_Management" title="মেমোরি ব্যবস্থাপনা">
+    
+      <link rel="alternate" hreflang="de" href="https://developer.mozilla.org/de/docs/Web/JavaScript/Speicherverwaltung" title="Speicherverwaltung">
+    
+      <link rel="alternate" hreflang="es" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Gestion_de_Memoria" title="Gestión de Memoria">
+    
+      <link rel="alternate" hreflang="fr" href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Gestion_de_la_m%C3%A9moire" title="Gestion de la mémoire">
+    
+      <link rel="alternate" hreflang="id" href="https://developer.mozilla.org/id/docs/Web/JavaScript/Memory_Management" title="Memory Management">
+    
+      <link rel="alternate" hreflang="it" href="https://developer.mozilla.org/it/docs/Web/JavaScript/Gestione_della_Memoria" title="Gestione della memoria">
+    
+      <link rel="alternate" hreflang="ja" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Memory_Management" title="メモリ管理">
+    
+      <link rel="alternate" hreflang="ko" href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Memory_Management" title="자바스크립트의 메모리관리">
+    
+      <link rel="alternate" hreflang="pt-BR" href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Memory_Management" title="Gerenciamento de Memória">
+    
+      <link rel="alternate" hreflang="pt-PT" href="https://developer.mozilla.org/pt-PT/docs/Web/JavaScript/Gestao_Memoria" title="Gestão de memória">
+    
+      <link rel="alternate" hreflang="ru" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Memory_Management" title="Управление памятью">
+    
+      <link rel="alternate" hreflang="zh-TW" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Memory_Management" title="記憶體管理">
+    
+  
+
+  <!-- document-specific social tags -->
+  <meta property="og:title" content="内存管理">
+  <meta property="og:url" content="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management">
+  <meta name="twitter:url" content="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management">
+  <meta name="twitter:title" content="内存管理">
+  
+  <meta property="og:description" content="像C语言这样的高级语言一般都有低级的内存管理接口，比如 malloc()和free()。另一方面，JavaScript创建变量（对象，字符串等）时分配内存，并且在不再使用它们时“自动”释放。 后一个过程称为垃圾回收。这个“自动”是混乱的根源，并让JavaScript（和其他高级语言）开发者感觉他们可以不关心内存管理。 这是错误的。">
+  <meta name="description" content="像C语言这样的高级语言一般都有低级的内存管理接口，比如 malloc()和free()。另一方面，JavaScript创建变量（对象，字符串等）时分配内存，并且在不再使用它们时“自动”释放。 后一个过程称为垃圾回收。这个“自动”是混乱的根源，并让JavaScript（和其他高级语言）开发者感觉他们可以不关心内存管理。 这是错误的。">
+  <meta name="twitter:description" content="像C语言这样的高级语言一般都有低级的内存管理接口，比如 malloc()和free()。另一方面，JavaScript创建变量（对象，字符串等）时分配内存，并且在不再使用它们时“自动”释放。 后一个过程称为垃圾回收。这个“自动”是混乱的根源，并让JavaScript（和其他高级语言）开发者感觉他们可以不关心内存管理。 这是错误的。">
+  
+
+<script async="" data-manual="true" src="./内存管理 - JavaScript _ MDN_files/syntax-prism.05dc5663d445.js.下载"></script></head>
+<body data-slug="Web/JavaScript/Memory_Management" contextmenu="edit-history-menu" data-search-url="" class="document  ">
+
+  <script>
+    // make sure global mdn object exists
+    var mdn = window.mdn || {};
+
+    (function(win) {
+        'use strict';
+
+        (function(){
+  var FLAGS = {
+    'compat_data': true,'kumaediting': false,'line_length': true,'page_move': false,'registration_disabled': false,'search_suggestions': false,'section_edit': false,'sg_task_completion': false,'spam_admin_override': false,'spam_checks_enabled': true,'spam_spammer_override': false,'spam_submissions_enabled': false,'spam_testing_mode': false,'wiki_samples': true,'wiki_spam_exempted': false,'wiki_spam_training': false
+    },
+    SWITCHES = {
+    'wiki_error_on_delete': false,'wiki_force_immediate_rendering': false,'enable_optimizely': false,'welcome_email': true,'application_ACAO': true,'store_revision_ips': true,'dumb_doc_urls': true,'newsletter': true,'newsletter_article': true,'foundation_callout': false,'helpful-survey-2': true,'wiki_spam_training': true
+    },
+    SAMPLES = {
+    
+    };
+  window.waffle = {
+    "flag_is_active": function waffle_flag(flag_name) {
+      
+      return !!FLAGS[flag_name];
+    },
+    "switch_is_active": function waffle_switch(switch_name) {
+      
+      return !!SWITCHES[switch_name];
+    },
+    "sample_is_active": function waffle_sample(sample_name) {
+      
+      return !!SAMPLES[sample_name];
+    },
+    "FLAGS": FLAGS,
+    "SWITCHES": SWITCHES,
+    "SAMPLES": SAMPLES
+  };
+})();
+
+
+        // This needs to be set before ckeditor.js loads
+        window.CKEDITOR_BASEPATH = '/static/js/libs/ckeditor/build/ckeditor/';
+
+        // Site configuration
+        win.mdn.ckeditor = {};
+        win.mdn.features = {};
+        win.mdn.staticPath = 'https://developer.mozilla.org/static/';
+        win.mdn.wiki = {
+            autosuggestTitleUrl: '/zh-CN/docs/get-documents'
+        };
+        win.mdn.assets = {
+            css: {
+                'editor-content': ['https://developer.mozilla.org/static/build/styles/editor-content.bdc51e6142e1.css','https://developer.mozilla.org/static/build/styles/editor-locale-zh-CN.f6594de96c23.css',
+                ],
+
+                'wiki-compat-tables': ['https://developer.mozilla.org/static/build/styles/wiki-compat-tables.aed4662ba49c.css',]
+            },
+            js: {
+                'syntax-prism': ['https://developer.mozilla.org/static/build/js/syntax-prism.05dc5663d445.js',],
+                'wiki-compat-tables': ['https://developer.mozilla.org/static/build/js/wiki-compat-tables.003f4acf76ea.js',]
+            }
+        };
+
+        win.mdn.notifications = [];
+
+        
+
+        // interactive editor config
+        win.mdn.interactiveEditor = {
+            siteUrl: "https://developer.mozilla.org",
+            editorUrl: "https://interactive-examples.mdn.mozilla.net"
+        };
+
+    })(this);
+</script>
+    
+    <ul id="nav-access">
+  <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management#content" id="skip-main">跳转至主要内容</a></li>
+  <li><a id="skip-language" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management#language">选择语言</a></li>
+  <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management#q" id="skip-search">跳到搜索</a></li>
+</ul>
+
+    <!-- Header -->
+    <header id="main-header" class="header-main">
+      <a href="https://developer.mozilla.org/zh-CN/" class="logo">MDN Web 文档</a>
+      <div class="nav-toolbox-wrapper">
+        <nav id="main-nav" class="nav-main" role="navigation">
+    <ul>
+        <li class="nav-main-item">
+            <a href="https://developer.mozilla.org/zh-CN/docs/Web">技术
+                <svg class="icon icon-caret-down" xmlns="http://www.w3.org/2000/svg" width="16" height="28" viewBox="0 0 16 28">
+    <path d="M16 11a.99.99 0 0 1-.297.703l-7 7C8.516 18.89 8.265 19 8 19s-.516-.109-.703-.297l-7-7A.996.996 0 0 1 0 11c0-.547.453-1 1-1h14c.547 0 1 .453 1 1z"></path>
+</svg>
+            </a>
+            <div class="submenu js-submenu" id="nav-tech-submenu">
+                <div class="submenu-column">
+                  <ul>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML">HTML</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS">CSS</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript">JavaScript</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/Graphics">图像</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP">HTTP</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/API">API / DOM</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions">浏览器扩展</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/MathML">MathML</a></li>
+                  </ul>
+                </div>
+            </div>
+        </li>
+        <li class="nav-main-item">
+            <a href="https://developer.mozilla.org/zh-CN/docs/Learn">参考和指引
+                <svg class="icon icon-caret-down" xmlns="http://www.w3.org/2000/svg" width="16" height="28" viewBox="0 0 16 28">
+    <path d="M16 11a.99.99 0 0 1-.297.703l-7 7C8.516 18.89 8.265 19 8 19s-.516-.109-.703-.297l-7-7A.996.996 0 0 1 0 11c0-.547.453-1 1-1h14c.547 0 1 .453 1 1z"></path>
+</svg>
+            </a>
+            <div class="submenu js-submenu" id="nav-learn-submenu">
+                <div class="submenu-column">
+                  <ul>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Learn">学习 web 开发</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/Tutorials">教程</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/Reference">参考文献</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/Guide">开发者指南</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/Accessibility">无障碍环境</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Games">游戏开发</a></li>
+                    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web">...更多文档</a></li>
+                  </ul>
+                </div>
+            </div>
+        </li>
+        <li class="nav-main-item">
+            <a href="https://developer.mozilla.org/zh-CN/docs/MDN/Feedback">反馈
+                <svg class="icon icon-caret-down" xmlns="http://www.w3.org/2000/svg" width="16" height="28" viewBox="0 0 16 28">
+    <path d="M16 11a.99.99 0 0 1-.297.703l-7 7C8.516 18.89 8.265 19 8 19s-.516-.109-.703-.297l-7-7A.996.996 0 0 1 0 11c0-.547.453-1 1-1h14c.547 0 1 .453 1 1z"></path>
+</svg>
+            </a>
+            <div class="submenu js-submenu" id="nav-contact-submenu">
+              <div class="submenu-column">
+                <ul>
+                  <li>
+                      <a href="https://support.mozilla.org/">获取 Firefox 帮助
+                          <svg class="icon icon-external-link" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+    <path d="M22 14.5v5c0 2.484-2.016 4.5-4.5 4.5h-13A4.502 4.502 0 0 1 0 19.5v-13C0 4.016 2.016 2 4.5 2h11c.281 0 .5.219.5.5v1c0 .281-.219.5-.5.5h-11A2.507 2.507 0 0 0 2 6.5v13C2 20.875 3.125 22 4.5 22h13c1.375 0 2.5-1.125 2.5-2.5v-5c0-.281.219-.5.5-.5h1c.281 0 .5.219.5.5zM28 1v8c0 .547-.453 1-1 1a.99.99 0 0 1-.703-.297l-2.75-2.75L13.36 17.14c-.094.094-.234.156-.359.156s-.266-.063-.359-.156l-1.781-1.781c-.094-.094-.156-.234-.156-.359s.063-.266.156-.359L21.048 4.454l-2.75-2.75a.996.996 0 0 1-.297-.703c0-.547.453-1 1-1h8c.547 0 1 .453 1 1z"></path>
+</svg>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="https://stackoverflow.com/">获取 Web 开发帮助
+                          <svg class="icon icon-external-link" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+    <path d="M22 14.5v5c0 2.484-2.016 4.5-4.5 4.5h-13A4.502 4.502 0 0 1 0 19.5v-13C0 4.016 2.016 2 4.5 2h11c.281 0 .5.219.5.5v1c0 .281-.219.5-.5.5h-11A2.507 2.507 0 0 0 2 6.5v13C2 20.875 3.125 22 4.5 22h13c1.375 0 2.5-1.125 2.5-2.5v-5c0-.281.219-.5.5-.5h1c.281 0 .5.219.5.5zM28 1v8c0 .547-.453 1-1 1a.99.99 0 0 1-.703-.297l-2.75-2.75L13.36 17.14c-.094.094-.234.156-.359.156s-.266-.063-.359-.156l-1.781-1.781c-.094-.094-.156-.234-.156-.359s.063-.266.156-.359L21.048 4.454l-2.75-2.75a.996.996 0 0 1-.297-.703c0-.547.453-1 1-1h8c.547 0 1 .453 1 1z"></path>
+</svg>
+                      </a>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                      <a href="https://developer.mozilla.org/zh-CN/docs/MDN/Community">加入 MDN 社区</a>
+                  </li>
+                  <li>
+                      <a target="_blank" href="https://bugzilla.mozilla.org/form.doc?bug_file_loc=https%3A//developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management">报告内容问题
+                          <svg class="icon icon-external-link" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+    <path d="M22 14.5v5c0 2.484-2.016 4.5-4.5 4.5h-13A4.502 4.502 0 0 1 0 19.5v-13C0 4.016 2.016 2 4.5 2h11c.281 0 .5.219.5.5v1c0 .281-.219.5-.5.5h-11A2.507 2.507 0 0 0 2 6.5v13C2 20.875 3.125 22 4.5 22h13c1.375 0 2.5-1.125 2.5-2.5v-5c0-.281.219-.5.5-.5h1c.281 0 .5.219.5.5zM28 1v8c0 .547-.453 1-1 1a.99.99 0 0 1-.703-.297l-2.75-2.75L13.36 17.14c-.094.094-.234.156-.359.156s-.266-.063-.359-.156l-1.781-1.781c-.094-.094-.156-.234-.156-.359s.063-.266.156-.359L21.048 4.454l-2.75-2.75a.996.996 0 0 1-.297-.703c0-.547.453-1 1-1h8c.547 0 1 .453 1 1z"></path>
+</svg>
+                      </a>
+                  </li>
+                  <li>
+                      <a target="_blank" href="https://bugzilla.mozilla.org/form.mdn">报告缺陷
+                          <svg class="icon icon-external-link" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+    <path d="M22 14.5v5c0 2.484-2.016 4.5-4.5 4.5h-13A4.502 4.502 0 0 1 0 19.5v-13C0 4.016 2.016 2 4.5 2h11c.281 0 .5.219.5.5v1c0 .281-.219.5-.5.5h-11A2.507 2.507 0 0 0 2 6.5v13C2 20.875 3.125 22 4.5 22h13c1.375 0 2.5-1.125 2.5-2.5v-5c0-.281.219-.5.5-.5h1c.281 0 .5.219.5.5zM28 1v8c0 .547-.453 1-1 1a.99.99 0 0 1-.703-.297l-2.75-2.75L13.36 17.14c-.094.094-.234.156-.359.156s-.266-.063-.359-.156l-1.781-1.781c-.094-.094-.156-.234-.156-.359s.063-.266.156-.359L21.048 4.454l-2.75-2.75a.996.996 0 0 1-.297-.703c0-.547.453-1 1-1h8c.547 0 1 .453 1 1z"></path>
+</svg>
+                      </a>
+                  </li>
+                </ul>
+              </div>
+          </div>
+      </li>
+  </ul>
+</nav>
+        <div id="toolbox" class="toolbox">
+  <ul>
+    
+    <li class="nav-login"><div class="login">
+    
+        
+        <a href="https://developer.mozilla.org/users/github/login/?next=%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FMemory_Management" class="login-link js-login-link" data-service="GitHub" rel="nofollow">
+            登录<svg class="icon icon-github" xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28" aria-hidden="true">
+    <title>Github</title>
+    <path d="M12 2c6.625 0 12 5.375 12 12 0 5.297-3.437 9.797-8.203 11.391-.609.109-.828-.266-.828-.578 0-.391.016-1.687.016-3.297 0-1.125-.375-1.844-.812-2.219 2.672-.297 5.484-1.313 5.484-5.922 0-1.313-.469-2.375-1.234-3.219.125-.313.531-1.531-.125-3.187-1-.313-3.297 1.234-3.297 1.234a11.28 11.28 0 0 0-6 0S6.704 6.656 5.704 6.969c-.656 1.656-.25 2.875-.125 3.187-.766.844-1.234 1.906-1.234 3.219 0 4.594 2.797 5.625 5.469 5.922-.344.313-.656.844-.766 1.609-.688.313-2.438.844-3.484-1-.656-1.141-1.844-1.234-1.844-1.234-1.172-.016-.078.734-.078.734.781.359 1.328 1.75 1.328 1.75.703 2.141 4.047 1.422 4.047 1.422 0 1 .016 1.937.016 2.234 0 .313-.219.688-.828.578C3.439 23.796.002 19.296.002 13.999c0-6.625 5.375-12 12-12zM4.547 19.234c.031-.063-.016-.141-.109-.187-.094-.031-.172-.016-.203.031-.031.063.016.141.109.187.078.047.172.031.203-.031zm.484.532c.063-.047.047-.156-.031-.25-.078-.078-.187-.109-.25-.047-.063.047-.047.156.031.25.078.078.187.109.25.047zm.469.703c.078-.063.078-.187 0-.297-.063-.109-.187-.156-.266-.094-.078.047-.078.172 0 .281s.203.156.266.109zm.656.656c.063-.063.031-.203-.063-.297-.109-.109-.25-.125-.313-.047-.078.063-.047.203.063.297.109.109.25.125.313.047zm.891.391c.031-.094-.063-.203-.203-.25-.125-.031-.266.016-.297.109s.063.203.203.234c.125.047.266 0 .297-.094zm.984.078c0-.109-.125-.187-.266-.172-.141 0-.25.078-.25.172 0 .109.109.187.266.172.141 0 .25-.078.25-.172zm.906-.156c-.016-.094-.141-.156-.281-.141-.141.031-.234.125-.219.234.016.094.141.156.281.125s.234-.125.219-.219z"></path>
+</svg>
+        </a>
+    
+</div></li>
+  </ul>
+</div>
+      </div>
+      <form id="nav-main-search" action="https://developer.mozilla.org/zh-CN/search" method="get" role="search" class="nav-main-search">
+  <div class="search-wrap">
+    <label for="main-q" class="offscreen">搜索</label>
+    <input type="search" id="main-q" name="q" placeholder="搜索" data-value="" value="" aria-hidden="true">
+    <span class="search-trigger">
+        <svg class="icon icon-search" xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28" aria-hidden="true">
+    <path d="M18 13c0-3.859-3.141-7-7-7s-7 3.141-7 7 3.141 7 7 7 7-3.141 7-7zm8 13c0 1.094-.906 2-2 2a1.96 1.96 0 0 1-1.406-.594l-5.359-5.344a10.971 10.971 0 0 1-6.234 1.937c-6.078 0-11-4.922-11-11s4.922-11 11-11 11 4.922 11 11c0 2.219-.672 4.406-1.937 6.234l5.359 5.359c.359.359.578.875.578 1.406z"></path>
+</svg>
+    </span>
+    <button type="submit" class="offscreen">搜索</button>
+    <button type="button" id="close-header-search" class="close-header-search transparent">
+        <span class="offscreen">关闭搜索</span>
+        <svg class="icon icon-close" xmlns="http://www.w3.org/2000/svg" width="22" height="28" viewBox="0 0 22 28" aria-hidden="true">
+    <path d="M20.281 20.656c0 .391-.156.781-.438 1.062l-2.125 2.125c-.281.281-.672.438-1.062.438s-.781-.156-1.062-.438L11 19.249l-4.594 4.594c-.281.281-.672.438-1.062.438s-.781-.156-1.062-.438l-2.125-2.125c-.281-.281-.438-.672-.438-1.062s.156-.781.438-1.062L6.751 15l-4.594-4.594c-.281-.281-.438-.672-.438-1.062s.156-.781.438-1.062l2.125-2.125c.281-.281.672-.438 1.062-.438s.781.156 1.062.438L11 10.751l4.594-4.594c.281-.281.672-.438 1.062-.438s.781.156 1.062.438l2.125 2.125c.281.281.438.672.438 1.062s-.156.781-.438 1.062L15.249 15l4.594 4.594c.281.281.438.672.438 1.062z"></path>
+</svg>
+    </button>
+  </div>
+</form>
+    </header> 
+
+  <!-- Content will go here -->
+  <main id="content" role="main">
+      
+  <!-- heading -->
+  <div id="wiki-document-head" class="document-head">
+    <div class="center">
+      <!-- action buttons -->
+      <div class="document-actions">
+        
+
+  
+    
+    
+  
+
+  
+    
+  
+
+  
+
+  <ul class="page-buttons">
+      <li>
+          <button id="languages-menu" class="transparent" aria-haspopup="true" aria-owns="languages-menu-submenu" aria-expanded="false">
+              <svg class="icon icon-language" xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28" aria-hidden="true">
+    <path d="M10.219 16.844c-.031.109-.797-.25-1-.328-.203-.094-1.125-.609-1.359-.766s-1.125-.891-1.234-.938a28.275 28.275 0 0 1-2.094 2.828c-.281.328-1.125 1.391-1.641 1.719-.078.047-.531.094-.594.063.25-.187.969-1.078 1.281-1.437.391-.453 2.25-3.047 2.562-3.641.328-.594 1.312-2.562 1.359-2.75-.156-.016-1.391.406-1.719.516-.313.094-1.172.297-1.234.344-.063.063-.016.25-.047.313s-.313.203-.484.234a1.647 1.647 0 0 1-.734 0c-.203-.047-.391-.25-.438-.328 0 0-.063-.094-.078-.359.187-.063.5-.078.844-.172s1.188-.344 1.641-.5 1.328-.484 1.594-.547c.281-.047.984-.516 1.359-.641s.641-.281.656-.203 0 .422-.016.516c-.016.078-.766 1.547-.875 1.781-.063.125-.5.953-1.203 2.047.25.109.781.328 1 .438.266.125 2.125.906 2.219.938s.266.75.234.875zM7.016 9.25c.047.266-.031.375-.063.438-.156.297-.547.5-.781.594s-.625.187-.938.187c-.141-.016-.422-.063-.766-.406-.187-.203-.328-.75-.266-.688s.516.125.719.078.688-.187.906-.25c.234-.078.703-.203.859-.219.156 0 .281.063.328.266zm10.906 2.016l.984 3.547-2.172-.656zM.609 23.766l10.844-3.625V4.016L.609 7.657v16.109zM20 18.813l1.594.484-2.828-10.266-1.563-.484-3.375 8.375 1.594.484.703-1.719 3.297 1.016zM12.141 3.781l8.953 2.875V.718zM17 24.453l2.469.203-.844 2.5L18 26.125c-1.266.812-2.828 1.437-4.312 1.687-.453.094-.969.187-1.422.187h-1.313c-1.656 0-4.672-.984-5.984-1.937-.094-.078-.125-.141-.125-.25 0-.172.125-.297.281-.297.141 0 .875.453 1.078.547 1.406.703 3.375 1.344 4.953 1.344 1.953 0 3.281-.25 5.063-1.016.516-.234.969-.531 1.453-.797zm7-16.859v16.859c-12.078-3.844-12.094-3.844-12.094-3.844C11.656 20.718.453 24.5.297 24.5a.3.3 0 0 1-.281-.203c0-.016-.016-.031-.016-.047V7.406c.016-.047.031-.125.063-.156.094-.109.219-.141.313-.172.047-.016 1-.328 2.328-.781v-6l8.719 3.094C11.532 3.36 21.251 0 21.392 0c.172 0 .313.125.313.328v6.531z"></path>
+</svg>
+              <span>语言</span>
+          </button>
+
+        <div class="submenu js-submenu" id="languages-menu-submenu">
+          <div class="submenu-column">
+            <ul id="translations">
+              
+                
+                
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management" data-locale="en-US" title="英语 (美国)">English (US) (en-US)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/bn-BD/docs/Web/JavaScript/Memory_Management" data-locale="bn-BD" title="孟加拉语 (孟加拉)">বাংলা (বাংলাদেশ) (bn-BD)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/de/docs/Web/JavaScript/Speicherverwaltung" data-locale="de" title="德语">Deutsch (de)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Gestion_de_Memoria" data-locale="es" title="西班牙语">Español (es)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Gestion_de_la_m%C3%A9moire" data-locale="fr" title="法语">Français (fr)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/id/docs/Web/JavaScript/Memory_Management" data-locale="id" title="印尼语">Bahasa Indonesia (id)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/it/docs/Web/JavaScript/Gestione_della_Memoria" data-locale="it" title="意大利语">Italiano (it)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Memory_Management" data-locale="ja" title="日语">日本語 (ja)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Memory_Management" data-locale="ko" title="朝鲜语">한국어 (ko)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Memory_Management" data-locale="pt-BR" title="葡萄牙语 (巴西)">Português (do&nbsp;Brasil) (pt-BR)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/pt-PT/docs/Web/JavaScript/Gestao_Memoria" data-locale="pt-PT" title="葡萄牙语 (葡萄牙)">Português (Europeu) (pt-PT)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Memory_Management" data-locale="ru" title="俄语">Русский (ru)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Memory_Management" data-locale="zh-TW" title="繁体中文">正體中文 (繁體) (zh-TW)</a></bdi></li>
+                
+              
+
+              
+            </ul>
+          </div>
+        </div>
+      </li>
+      
+      <li class="page-buttons-edit">
+          <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management$edit" class="button neutral" id="edit-button" rel="nofollow">
+              <svg class="icon icon-pencil" xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28" aria-hidden="true">
+    <path d="M5.672 24l1.422-1.422-3.672-3.672L2 20.328V22h2v2h1.672zm8.172-14.5a.329.329 0 0 0-.344-.344.368.368 0 0 0-.266.109l-8.469 8.469a.366.366 0 0 0-.109.266c0 .203.141.344.344.344a.368.368 0 0 0 .266-.109l8.469-8.469a.366.366 0 0 0 .109-.266zM13 6.5l6.5 6.5-13 13H0v-6.5zM23.672 8c0 .531-.219 1.047-.578 1.406L20.5 12 14 5.5l2.594-2.578c.359-.375.875-.594 1.406-.594s1.047.219 1.422.594l3.672 3.656c.359.375.578.891.578 1.422z"></path>
+</svg>
+              编辑
+          </a>
+      </li>
+      
+
+        
+
+        <li class="page-buttons-advanced">
+            <button id="advanced-menu" class="only-icon" aria-haspopup="true" aria-owns="advanced-menu-submenu" aria-expanded="false">
+                <svg class="icon icon-gear" xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28" aria-hidden="true">
+    <path d="M16 14c0-2.203-1.797-4-4-4s-4 1.797-4 4 1.797 4 4 4 4-1.797 4-4zm8-1.703v3.469c0 .234-.187.516-.438.562l-2.891.438a8.86 8.86 0 0 1-.609 1.422c.531.766 1.094 1.453 1.672 2.156.094.109.156.25.156.391s-.047.25-.141.359c-.375.5-2.484 2.797-3.016 2.797a.795.795 0 0 1-.406-.141l-2.156-1.687a9.449 9.449 0 0 1-1.422.594c-.109.953-.203 1.969-.453 2.906a.573.573 0 0 1-.562.438h-3.469c-.281 0-.531-.203-.562-.469l-.438-2.875a9.194 9.194 0 0 1-1.406-.578l-2.203 1.672c-.109.094-.25.141-.391.141s-.281-.063-.391-.172c-.828-.75-1.922-1.719-2.578-2.625a.607.607 0 0 1 .016-.718c.531-.719 1.109-1.406 1.641-2.141a8.324 8.324 0 0 1-.641-1.547l-2.859-.422A.57.57 0 0 1 0 15.705v-3.469c0-.234.187-.516.422-.562l2.906-.438c.156-.5.359-.969.609-1.437a37.64 37.64 0 0 0-1.672-2.156c-.094-.109-.156-.234-.156-.375s.063-.25.141-.359c.375-.516 2.484-2.797 3.016-2.797.141 0 .281.063.406.156L7.828 5.94a9.449 9.449 0 0 1 1.422-.594c.109-.953.203-1.969.453-2.906a.573.573 0 0 1 .562-.438h3.469c.281 0 .531.203.562.469l.438 2.875c.484.156.953.344 1.406.578l2.219-1.672c.094-.094.234-.141.375-.141s.281.063.391.156c.828.766 1.922 1.734 2.578 2.656a.534.534 0 0 1 .109.344c0 .141-.047.25-.125.359-.531.719-1.109 1.406-1.641 2.141.266.5.484 1.016.641 1.531l2.859.438a.57.57 0 0 1 .453.562z"></path>
+</svg>
+                <span>高级</span>
+            </button>
+            <div class="submenu js-submenu" id="advanced-menu-submenu">
+                <!-- this page -->
+                <div class="submenu-column">
+                    <div class="title">高级</div>
+                    <ul>
+                        <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management$history" rel="nofollow">历史记录</a></li>
+                        
+                        
+                        
+
+
+                
+
+                
+                
+                
+                <li class="page-print"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management#" onclick="return window.print();">打印此文章</a></li>
+            </ul>
+          </div>
+        </div>
+  </li></ul>
+      </div>
+
+      <div class="document-title">
+        
+
+        <h1>内存管理</h1>
+      </div>
+    </div>
+  </div>
+  
+
+      <div class="center clear">
+      
+
+    <div class="wiki-main-content" id="document-main"><div class="center">
+      <!-- start the main content container -->
+        <div id="wiki-column-container" class="wiki-left-present">
+
+          <!-- content row with three strips -->
+          <div class="column-container column-container-reverse">
+
+            <!-- center: main article content -->
+            <div id="wiki-content" class="column-main wiki-column text-content">
+
+              
+
+              
+              
+
+              
+
+              
+                
+              
+              
+
+              <!-- just the article content -->
+              <article id="wikiArticle">
+                
+                  
+                    <p></p><p></p>
+
+<h2 id="简介">简介</h2>
+
+<p>像C语言这样的高级语言一般都有低级的内存管理接口，比如&nbsp;<code>malloc()</code>和<code>free()</code>。另一方面，JavaScript创建变量（对象，字符串等）时分配内存，并且在不再使用它们时“自动”释放。 后一个过程称为垃圾回收。这个“自动”是混乱的根源，并让JavaScript（和其他高级语言）开发者感觉他们可以不关心内存管理。 这是错误的。</p>
+
+<h2 id="内存生命周期">内存生命周期</h2>
+
+<p>不管什么程序语言，内存生命周期基本是一致的：&nbsp;&nbsp;&nbsp;</p>
+
+<ol>
+ <li>分配你所需要的内存</li>
+ <li>使用分配到的内存（读、写）</li>
+ <li>不需要时将其释放\归还</li>
+</ol>
+
+<p>在所有语言中第一和第二部分都很清晰。最后一步在底层语言中很清晰，但是在像JavaScript 等上层语言中，这一步是隐藏的、透明的。</p>
+
+<h3 id="JavaScript_的内存分配" class="highlight-spanned"><span class="highlight-span">JavaScript 的内存分配</span></h3>
+
+<h4 id="值的初始化">值的初始化</h4>
+
+<p>为了不让程序员费心分配内存，JavaScript 在定义变量时就完成了内存分配。</p>
+
+<pre class="brush: js line-numbers  language-js"><code class=" language-js"><span class="token keyword">var</span> n <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 给数值变量分配内存</span>
+<span class="token keyword">var</span> s <span class="token operator">=</span> <span class="token string">"azerty"</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 给字符串分配内存</span>
+
+<span class="token keyword">var</span> o <span class="token operator">=</span> <span class="token punctuation">{</span>
+  a<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  b<span class="token punctuation">:</span> <span class="token keyword">null</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 给对象及其包含的值分配内存</span>
+
+<span class="token comment" spellcheck="true">// 给数组及其包含的值分配内存（就像对象一样）</span>
+<span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token string">"abra"</span><span class="token punctuation">]</span><span class="token punctuation">;</span> 
+
+<span class="token keyword">function</span> <span class="token function">f</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">return</span> a <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// 给函数（可调用的对象）分配内存</span>
+
+<span class="token comment" spellcheck="true">// 函数表达式也能分配一个对象</span>
+someElement<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  someElement<span class="token punctuation">.</span>style<span class="token punctuation">.</span>backgroundColor <span class="token operator">=</span> <span class="token string">'blue'</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="通过函数调用分配内存">通过函数调用分配内存</h4>
+
+<p>有些函数调用结果是分配对象内存：</p>
+
+<pre class="brush: js line-numbers  language-js"><code class=" language-js"><span class="token keyword">var</span> d <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 分配一个 Date 对象</span>
+
+<span class="token keyword">var</span> e <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 分配一个 DOM 元素</span><span class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>有些方法分配新变量或者新对象：</p>
+
+<pre class="brush: js line-numbers  language-js"><code class=" language-js"><span class="token keyword">var</span> s <span class="token operator">=</span> <span class="token string">"azerty"</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> s2 <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">substr</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// s2 是一个新的字符串</span>
+<span class="token comment" spellcheck="true">// 因为字符串是不变量，</span>
+<span class="token comment" spellcheck="true">// JavaScript 可能决定不分配内存，</span>
+<span class="token comment" spellcheck="true">// 只是存储了 [0-3] 的范围。</span>
+
+<span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"ouais ouais"</span><span class="token punctuation">,</span> <span class="token string">"nan nan"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> a2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"generation"</span><span class="token punctuation">,</span> <span class="token string">"nan nan"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> a3 <span class="token operator">=</span> a<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>a2<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token comment" spellcheck="true">// 新数组有四个元素，是 a 连接 a2 的结果</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="使用值" class="highlight-spanned"><span class="highlight-span">使用值</span></h3>
+
+<p>使用值的过程实际上是对分配内存进行读取与写入的操作。读取与写入可能是写入一个变量或者一个对象的属性值，甚至传递函数的参数。</p>
+
+<h3 id="当内存不再需要使用时释放" class="highlight-spanned"><span class="highlight-span">当内存不再需要使用时释放</span></h3>
+
+<p>大多数内存管理的问题都在这个阶段。在这里最艰难的任务是找到“所分配的内存确实已经不再需要了”。它往往要求开发人员来确定在程序中哪一块内存不再需要并且释放它。</p>
+
+<p>高级语言解释器嵌入了“垃圾回收器”，它的主要工作是跟踪内存的分配和使用，以便当分配的内存不再使用时，自动释放它。这只能是一个近似的过程，因为要知道是否仍然需要某块内存是<a href="http://en.wikipedia.org/wiki/Decidability_%28logic%29" class="external external-icon" rel="noopener">无法判定的</a>（无法通过某种算法解决）。</p>
+
+<h2 id="垃圾回收">垃圾回收</h2>
+
+<p>如上文所述自动寻找是否一些内存“不再需要”的问题是无法判定的。因此，垃圾回收实现只能有限制的解决一般问题。本节将解释必要的概念，了解主要的垃圾回收算法和它们的局限性。</p>
+
+<h3 id="引用" class="highlight-spanned"><span class="highlight-span">引用</span></h3>
+
+<p>垃圾回收算法主要依赖于引用的概念。在内存管理的环境中，一个对象如果有访问另一个对象的权限（隐式或者显式），叫做一个对象引用另一个对象。例如，一个Javascript对象具有对它<a href="https://developer.mozilla.org/en/JavaScript/Guide/Inheritance_and_the_prototype_chain" title="en/JavaScript/Guide/Inheritance_and_the_prototype_chain">原型</a>的引用（隐式引用）和对它属性的引用（显式引用）。</p>
+
+<p>在这里，“对象”的概念不仅特指 JavaScript 对象，还包括函数作用域（或者全局词法作用域）。</p>
+
+<h3 id="引用计数垃圾收集" class="highlight-spanned"><span class="highlight-span">引用计数垃圾收集</span></h3>
+
+<p>这是最简单的垃圾收集算法。此算法把“对象是否不再需要”简化定义为“对象有没有其他对象引用到它”。如果没有引用指向该对象（零引用），对象将被垃圾回收机制回收。</p>
+
+<h4 id="示例">示例</h4>
+
+<pre class="brush: js line-numbers  language-js"><code class=" language-js"><span class="token keyword">var</span> o <span class="token operator">=</span> <span class="token punctuation">{</span> 
+  a<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    b<span class="token punctuation">:</span><span class="token number">2</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span> 
+<span class="token comment" spellcheck="true">// 两个对象被创建，一个作为另一个的属性被引用，另一个被分配给变量o</span>
+<span class="token comment" spellcheck="true">// 很显然，没有一个可以被垃圾收集</span>
+
+
+<span class="token keyword">var</span> o2 <span class="token operator">=</span> o<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// o2变量是第二个对“这个对象”的引用</span>
+
+o <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>      <span class="token comment" spellcheck="true">// 现在，“这个对象”的原始引用o被o2替换了</span>
+
+<span class="token keyword">var</span> oa <span class="token operator">=</span> o2<span class="token punctuation">.</span>a<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 引用“这个对象”的a属性</span>
+<span class="token comment" spellcheck="true">// 现在，“这个对象”有两个引用了，一个是o2，一个是oa</span>
+
+o2 <span class="token operator">=</span> <span class="token string">"yo"</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 最初的对象现在已经是零引用了</span>
+           <span class="token comment" spellcheck="true">// 他可以被垃圾回收了</span>
+           <span class="token comment" spellcheck="true">// 然而它的属性a的对象还在被oa引用，所以还不能回收</span>
+
+oa <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// a属性的那个对象现在也是零引用了</span>
+           <span class="token comment" spellcheck="true">// 它可以被垃圾回收了</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="限制：循环引用">限制：循环引用</h4>
+
+<p>该算法有个限制：无法处理循环引用。在下面的例子中，两个对象被创建，并互相引用，形成了一个循环。它们被调用之后不会离开函数作用域，所以它们已经没有用了，可以被回收了。然而，引用计数算法考虑到它们互相都有至少一次引用，所以它们不会被回收</p>
+
+<pre class="brush: js line-numbers  language-js"><code class=" language-js"><span class="token keyword">function</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">var</span> o <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> o2 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+  o<span class="token punctuation">.</span>a <span class="token operator">=</span> o2<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// o 引用 o2</span>
+  o2<span class="token punctuation">.</span>a <span class="token operator">=</span> o<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// o2 引用 o</span>
+
+  <span class="token keyword">return</span> <span class="token string">"azerty"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="实际例子">实际例子</h4>
+
+<p>IE 6, 7 使用引用计数方式对 DOM 对象进行垃圾回收。该方式常常造成对象被循环引用时内存发生泄漏：</p>
+
+<pre class="brush: js line-numbers  language-js"><code class=" language-js"><span class="token keyword">var</span> div<span class="token punctuation">;</span>
+window<span class="token punctuation">.</span>onload <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  div <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"myDivElement"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  div<span class="token punctuation">.</span>circularReference <span class="token operator">=</span> div<span class="token punctuation">;</span>
+  div<span class="token punctuation">.</span>lotsOfData <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Array</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">"*"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在上面的例子里，<code>myDivElement</code>&nbsp;这个 DOM 元素里的 <code>circularReference 属性</code>引用了 <code>myDivElement</code>，造成了循环引用。如果该属性没有显示移除或者设为 null，引用计数式垃圾收集器将总是且至少有一个引用，并将一直保持在内存里的 DOM 元素，即使其从DOM 树中删去了。如果这个 DOM 元素拥有大量的数据 (如上的 <code>lotsOfData</code> 属性)，而这个数据占用的内存将永远不会被释放。</p>
+
+<h3 id="标记-清除算法" class="highlight-spanned"><span class="highlight-span">标记-清除算法</span></h3>
+
+<p>这个算法把“对象是否不再需要”简化定义为“对象是否可以获得”。</p>
+
+<p>这个算法假定设置一个叫做根（root）的对象（在Javascript里，根是全局对象）。定期的，垃圾回收器将从根开始，找所有从根开始引用的对象，然后找这些对象引用的对象……从根开始，垃圾回收器将找到所有可以获得的对象和所有不能获得的对象。</p>
+
+<p>这个算法比前一个要好，因为“有零引用的对象”总是不可获得的，但是相反却不一定，参考“循环引用”。</p>
+
+<p>从2012年起，所有现代浏览器都使用了标记-清除垃圾回收算法。所有对JavaScript垃圾回收算法的改进都是基于标记-清除算法的改进，并没有改进标记-清除算法本身和它对“对象是否不再需要”的简化定义。</p>
+
+<h4 id="循环引用不再是问题了">循环引用不再是问题了</h4>
+
+<div>在上面的示例中，函数调用返回之后，两个对象从全局对象出发无法获取。因此，他们将会被垃圾回收器回收。第二个示例同样，一旦 div 和其事件处理无法从根获取到，他们将会被垃圾回收器回收。</div>
+
+<h4 id="限制_那些无法从根对象查询到的对象都将被清除">限制: 那些无法从根对象查询到的对象都将被清除</h4>
+
+<p>尽管这是一个限制，但实践中我们很少会碰到类似的情况，所以开发者不太会去关心垃圾回收机制。</p>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+ <li><a href="http://www.ibm.com/developerworks/web/library/wa-memleak/" class="external external-icon" rel="noopener">IBM article on "Memory leak patterns in JavaScript" (2007)</a></li>
+ <li><a href="http://msdn.microsoft.com/en-us/magazine/ff728624.aspx" class="external external-icon" rel="noopener">Kangax article on how to register event handler and avoid memory leaks (2010)</a></li>
+ <li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Performance" title="https://developer.mozilla.org/en-US/docs/Mozilla/Performance">Performance</a></li>
+</ul>
+                  
+                
+              </article>
+
+              <!-- contributors -->
+              <div class="wiki-block contributors">
+                <h2 class="offscreen">文档标签和贡献者</h2>
+                
+                
+  <div class="tag-attach-list contributors-sub">
+    <svg class="icon icon-tags" xmlns="http://www.w3.org/2000/svg" width="30" height="28" viewBox="0 0 30 28" aria-hidden="true">
+    <path d="M7 7c0-1.109-.891-2-2-2s-2 .891-2 2 .891 2 2 2 2-.891 2-2zm16.672 9c0 .531-.219 1.047-.578 1.406l-7.672 7.688c-.375.359-.891.578-1.422.578s-1.047-.219-1.406-.578L1.422 13.906C.625 13.125 0 11.609 0 10.5V4c0-1.094.906-2 2-2h6.5c1.109 0 2.625.625 3.422 1.422l11.172 11.156c.359.375.578.891.578 1.422zm6 0c0 .531-.219 1.047-.578 1.406l-7.672 7.688a2.08 2.08 0 0 1-1.422.578c-.812 0-1.219-.375-1.75-.922l7.344-7.344c.359-.359.578-.875.578-1.406s-.219-1.047-.578-1.422L14.422 3.422C13.625 2.625 12.11 2 11 2h3.5c1.109 0 2.625.625 3.422 1.422l11.172 11.156c.359.375.578.891.578 1.422z"></path>
+</svg>
+    <strong>标签：</strong>&nbsp;
+    <ul class="tags tags-small">
+      
+        <li><a href="https://developer.mozilla.org/zh-CN/docs/tag/JavaScript" rel="nofollow">JavaScript</a></li>
+      
+        <li><a href="https://developer.mozilla.org/zh-CN/docs/tag/%E5%86%85%E5%AD%98" rel="nofollow">内存</a></li>
+      
+        <li><a href="https://developer.mozilla.org/zh-CN/docs/tag/%E6%80%A7%E8%83%BD" rel="nofollow">性能</a></li>
+      
+    </ul>
+  </div>
+
+
+                
+                  <div class="contributors-sub">
+                    <svg class="icon icon-group" xmlns="http://www.w3.org/2000/svg" width="30" height="28" viewBox="0 0 30 28" aria-hidden="true">
+    <path d="M9.266 14a5.532 5.532 0 0 0-4.141 2H3.031C1.468 16 0 15.25 0 13.516 0 12.25-.047 8 1.937 8c.328 0 1.953 1.328 4.062 1.328.719 0 1.406-.125 2.078-.359A7.624 7.624 0 0 0 7.999 10c0 1.422.453 2.828 1.266 4zM26 23.953C26 26.484 24.328 28 21.828 28H8.172C5.672 28 4 26.484 4 23.953 4 20.422 4.828 15 9.406 15c.531 0 2.469 2.172 5.594 2.172S20.063 15 20.594 15C25.172 15 26 20.422 26 23.953zM10 4c0 2.203-1.797 4-4 4S2 6.203 2 4s1.797-4 4-4 4 1.797 4 4zm11 6c0 3.313-2.688 6-6 6s-6-2.688-6-6 2.688-6 6-6 6 2.688 6 6zm9 3.516C30 15.25 28.531 16 26.969 16h-2.094a5.532 5.532 0 0 0-4.141-2A7.066 7.066 0 0 0 22 10a7.6 7.6 0 0 0-.078-1.031A6.258 6.258 0 0 0 24 9.328C26.109 9.328 27.734 8 28.062 8c1.984 0 1.937 4.25 1.937 5.516zM28 4c0 2.203-1.797 4-4 4s-4-1.797-4-4 1.797-4 4-4 4 1.797 4 4z"></path>
+</svg>
+                    <strong>此页面的贡献者：</strong>
+                    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/DarrenMan">DarrenMan</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/zhangchen">zhangchen</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/micooz">micooz</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/sunnylost">sunnylost</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/Ende93">Ende93</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/wth">wth</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/timwangdev">timwangdev</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/jackyKin">jackyKin</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/horizon0514">horizon0514</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/knightf">knightf</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/Bosn">Bosn</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/teoli">teoli</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/Samoay">Samoay</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/tank">tank</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/jnoodle">jnoodle</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/Joe_Zhao">Joe_Zhao</a>, 
+    
+        <a href="https://developer.mozilla.org/zh-CN/profiles/ziyunfei">ziyunfei</a>
+    
+                  </div>
+                
+
+                
+                  <div class="contributors-sub">
+                    <svg class="icon icon-clock" xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28" aria-hidden="true">
+    <path d="M14 8.5v7c0 .281-.219.5-.5.5h-5a.494.494 0 0 1-.5-.5v-1c0-.281.219-.5.5-.5H12V8.5c0-.281.219-.5.5-.5h1c.281 0 .5.219.5.5zm6.5 5.5c0-4.688-3.813-8.5-8.5-8.5S3.5 9.313 3.5 14s3.813 8.5 8.5 8.5 8.5-3.813 8.5-8.5zm3.5 0c0 6.625-5.375 12-12 12S0 20.625 0 14 5.375 2 12 2s12 5.375 12 12z"></path>
+</svg>
+                    <strong>最后编辑者:</strong>
+                    <a href="https://developer.mozilla.org/zh-CN/profiles/DarrenMan">DarrenMan</a>,
+                    <time datetime="2018-02-04T18:56:56.870928-08:00">Feb 4, 2018, 6:56:56 PM</time>
+                  </div>
+                
+              </div>
+            </div>
+
+            
+              <!-- quick links and zone subnav strip -->
+              <div id="wiki-left" class="column-strip wiki-column">
+
+                
+                  <!-- crumbs -->
+                  
+  
+    <nav class="crumbs" role="navigation">
+      <ol typeof="BreadcrumbList" vocab="https://schema.org/" aria-label="面包屑导航">
+        
+          <li property="itemListElement" typeof="ListItem" class="crumb">
+            <a href="https://developer.mozilla.org/zh-CN/docs/Web" property="item" typeof="WebPage">
+              <span property="name">Web 技术文档</span>
+            </a>
+            <meta property="position" content="1">
+          </li>
+        
+          <li property="itemListElement" typeof="ListItem" class="crumb">
+            <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript" property="item" typeof="WebPage">
+              <span property="name">Java<wbr>Script</span>
+            </a>
+            <meta property="position" content="2">
+          </li>
+        
+        <li property="itemListElement" typeof="ListItem" class="crumb">
+          <span property="name">内存管理</span>
+        </li>
+      </ol>
+    </nav>
+  
+                
+
+                
+
+                
+                  <!-- quick links -->
+                  
+  <div class="quick-links" id="quick-links">
+    <div class="quick-links-head">相关主题</div>
+    
+ <ol>
+  <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript"><strong><em>JavaScript</em></strong></a></li>
+  <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Tutorials" class="new" rel="nofollow"><strong>教程:</strong></a></li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>快速入门</a>
+   <ol class="toggle-container" style="display: none;">
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Learn/Getting_started_with_the_web/JavaScript_basics">JavaScript 基础知识</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Learn/JavaScript/First_steps">JavaScript first steps</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Learn/JavaScript/Building_blocks">JavaScript building blocks</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Learn/JavaScript/Objects">Introducing JavaScript objects</a></li>
+   </ol>
+  </li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>JavaScript 指南</a>
+    <ol class="toggle-container" style="display: none;">
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Introduction">Introduction</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Grammar_and_Types">Grammar and types</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Control_flow_and_error_handling">Control flow and error handling</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Loops_and_iteration">Loops and iteration</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Functions">Functions</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Expressions_and_Operators">Expressions and operators</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Numbers_and_dates">Numbers and dates</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Text_formatting">Text formatting</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions">Regular expressions</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Indexed_collections">Indexed collections</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Keyed_collections">Keyed collections</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Working_with_Objects">Working with objects</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Details_of_the_Object_Model">Details of the object model</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Using_promises">Using promises</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Iterators_and_generators">Iterators and generators</a></li>
+      <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Meta_programming">Meta programming</a></li>
+   </ol>
+  </li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>中级教程</a>
+   <ol class="toggle-container" style="display: none;">
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Learn/JavaScript/Objects">Introducing JavaScript objects</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Learn/JavaScript/Client-side_web_APIs">Client-side web APIs</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/A_re-introduction_to_JavaScript">深入 JavaScript</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures">JavaScript 数据结构</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Equality_comparisons_and_sameness">如何正确判断相等性</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures">Closures</a></li>
+   </ol>
+  </li>
+  <li data-default-state="open" class="toggleable current" data-closed=""><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-down"></i>高级</a>
+   <ol class="toggle-container" aria-expanded="true" style="display: block;">
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain">继承和原型链</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode">严格模式</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Typed_arrays">JavaScript 类型化数组</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/SIMD_types">SIMD types</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management">内存管理</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop">Concurrency model and Event Loop</a></li>
+   </ol>
+  </li>
+  <li><strong><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference">引用:</a></strong></li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>内置对象</a>
+   <ol class="toggle-container" style="display: none;"><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array" title="JavaScript的 Array 对象是用于构造数组的全局对象，数组是类似于列表的高阶对象。">Array</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer" title="The source for this interactive example is stored in a GitHub repository. If you&#39;d like to contribute to the interactive examples project, please clone https://github.com/mdn/interactive-examples and send us a pull request.">ArrayBuffer</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction" title="AsyncFunction 构造函数用来创建新的 异步函数 对象，JavaScript 中每个异步函数都是  AsyncFunction 的对象。">AsyncFunction</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Atomics" title="Atomics 对象提供了一组静态方法用来对 SharedArrayBuffer 对象进行原子操作。">Atomics</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Boolean" title="Boolean对象是一个布尔值的对象包装器。">Boolean</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/DataView" title="DataView 视图是一个可以从 ArrayBuffer 对象中读写多种数值类型的底层接口，在读写时不用考虑平台字节序问题。">DataView</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date" title="创建 Date 实例用来处理日期和时间。Date 对象基于1970年1月1日（世界标准时间）起的毫秒数。">Date</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Error" title="通过Error的构造器可以创建一个错误对象。当运行时错误产生时，Error的实例对象会被抛出。Error对象也可用于用户自定义的异常的基础对象。下面列出了各种内建的标准错误类型。">Error</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/EvalError" title="本对象代表了一个关于 eval 函数的错误.此异常不再会被JavaScript抛出，但是EvalError对象仍然保持兼容性.">EvalError</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Float32Array" title="Float32Array 类型数组代表的是平台字节顺序为32位的浮点数型数组(对应于 C 浮点数据类型) 。 如果需要控制字节顺序， 使用 DataView 替代。其内容初始化为0。一旦建立起来，你可以使用这个对象的方法对其元素进行操作，或者使用标准数组索引语法 (使用方括号)。">Float32Array</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Float64Array" title="Float64Array 类型数组代表的是平台字节顺序为64位的浮点数型数组(对应于 C 浮点数据类型) 。 如果需要控制字节顺序， 使用 DataView 替代。其内容初始化为0。一旦建立起来，你可以使用这个对象的方法对其元素进行操作，或者使用标准数组索引语法 (使用方括号)。">Float64Array</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function" title="Function 构造函数 创建一个新的Function对象。 在 JavaScript 中, 每个函数实际上都是一个Function对象。">Function</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator" title="生成器对象是由一个 generator function 返回的,并且它符合可迭代协议和迭代器协议。">Generator</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction" title="GeneratorFunction构造器生成新的生成器函数 对象。在JavaScript中，生成器函数实际上都是GeneratorFunction的实例对象。">GeneratorFunction</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Infinity" title="全局属性 Infinity 是一个数值，表示无穷大。">Infinity</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Int16Array" title="The Int16Array typed array represents an array of twos-complement 16-bit signed integers in the platform byte order. If control over byte order is needed, use DataView instead. The contents are initialized to 0. Once established, you can reference elements in the array using the object&#39;s methods, or using standard array index syntax (that is, using bracket notation).">Int16Array</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Int32Array" title="The Int32Array typed array represents an array of twos-complement 32-bit signed integers in the platform byte order. If control over byte order is needed, use DataView instead. The contents are initialized to 0. Once established, you can reference elements in the array using the object&#39;s methods, or using standard array index syntax (that is, using bracket notation).">Int32Array</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Int8Array" title="Int8Array 类型数组表示二进制补码8位有符号整数的数组。内容初始化为0。 一旦建立，你可以使用对象的方法引用数组中的元素，或使用标准数组索引语法( 即，使用括号注释)。">Int8Array</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/InternalError" title="InternalError 对象表示出现在JavaScript引擎内部的错误。 例如： &quot;InternalError: too much recursion&quot;（内部错误：递归过深）。">InternalError</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl" title="国际化的构造函数和其他构造函数的几个语言敏感的方法（可见See also）一样，使用同样的模式来识别语言区域和确定使用哪一种语言格式：他们都接收 locales 和 options 参数，使用 options.localeMatcher 属性指定的一个算法来对比应用请求的和支持的语言区域，来确定使用哪一个语言区域。">Intl</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Collator" title="Intl.Collator 是用于语言敏感字符串比较的 collators构造函数。">Intl.Collator</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat" title="交互示例的源代码存储在 GitHub 资源库。如果你愿意分布交互示例，请复制https://github.com/mdn/interactive-examples，并向我们发送一个pull请求。">Intl.DateTimeFormat</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat" title="Intl.NumberFormat是对语言敏感的格式化数字类的构造器类">Intl.NumberFormat</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/PluralRules" title="The Intl.PluralRules object is a constructor for objects that enable plural sensitive formatting and plural language rules." class="new" rel="nofollow">Intl.PluralRules</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/PluralRules$translate" style="opacity: 0.5;" title="此页面仍未被本地化, 期待您的翻译!" class="new" rel="nofollow">[我来译!]</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON" title="JSON对象包含两个方法: 用于解析 JavaScript Object Notation  (JSON) 的 parse() 方法，以及将对象/值转换为 JSON字符串的 stringify() 方法。除了这两个方法, JSON这个对象本身并没有其他作用，也不能被调用或者作为构造函数调用。">JSON</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Map" title="Map 对象保存键值对。任何值(对象或者原始值) 都可以作为一个键或一个值。">Map</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Math" title="Math 是一个内置对象， 它具有数学常数和函数的属性和方法。不是一个函数对象。">Math</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/NaN" title="全局属性 NaN 的值表示不是一个数字（Not-A-Number）。">NaN</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Number" title="JavaScript 的 Number 对象是经过封装的能让你处理数字值的对象。Number 对象由 Number() 构造器创建。">Number</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object" title="Object 构造函数创建一个对象包装器。">Object</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Promise 对象用于表示一个异步操作的最终状态（完成或失败），以及其返回的值。">Promise</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy" title="Editorial review completed.">Proxy</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/RangeError" title="RangeError对象标明一个错误，当一个值不在其所允许的范围或者集合中。">RangeError</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError" title="ReferenceError（引用错误） 对象表明一个不存在的变量被引用。">ReferenceError</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect" title="Reflect 是一个内置的对象，它提供拦截 JavaScript 操作的方法。这些方法与处理器对象的方法相同。Reflect不是一个函数对象，因此它是不可构造的。">Reflect</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/RegExp" title="RegExp 构造函数创建了一个正则表达式对象，用于将文本与一个模式匹配。">RegExp</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/SIMD" title="SIMD (pronounced &quot;sim-dee&quot;) is short for Single Instruction/Multiple Data which is one classification of computer architectures. SIMD operations perform the same computation on multiple data points resulting in data level parallelism and thus performance gains, for example for 3D graphics and video processing, physics simulations or cryptography, and other domains.">SIMD</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Bool16x8" title="SIMD.js has been taken out of active development in TC39 and removed from Stage 3. It is not being pursued by web browsers for implementation anymore. SIMD operations exposed to the web are under active development within WebAssembly, with operations based on the SIMD.js operations.">SIMD.Bool16x8</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Bool32x4" title="SIMD.js has been taken out of active development in TC39 and removed from Stage 3. It is not being pursued by web browsers for implementation anymore. SIMD operations exposed to the web are under active development within WebAssembly, with operations based on the SIMD.js operations.">SIMD.Bool32x4</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Bool64x2" title="SIMD.js已经从TC39的发展中主动脱离出来了，在第三阶段移除。web浏览器不再追求它的实现。SIMD操作暴露在web上，在WebAssembly中处于积极的开发状态，操作基于SIMD.js操作。">SIMD.Bool64x2</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Bool8x16" title="SIMD.js has been taken out of active development in TC39 and removed from Stage 3. It is not being pursued by web browsers for implementation anymore. SIMD operations exposed to the web are under active development within WebAssembly, with operations based on the SIMD.js operations." class="new" rel="nofollow">SIMD.Bool8x16</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Bool8x16$translate" style="opacity: 0.5;" title="此页面仍未被本地化, 期待您的翻译!" class="new" rel="nofollow">[我来译!]</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Float32x4" title="SIMD.js has been taken out of active development in TC39 and removed from Stage 3. It is not being pursued by web browsers for implementation anymore. SIMD operations exposed to the web are under active development within WebAssembly, with operations based on the SIMD.js operations." class="new" rel="nofollow">SIMD.Float32x4</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Float32x4$translate" style="opacity: 0.5;" title="此页面仍未被本地化, 期待您的翻译!" class="new" rel="nofollow">[我来译!]</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Float64x2" title="SIMD.js has been taken out of active development in TC39 and removed from Stage 3. It is not being pursued by web browsers for implementation anymore. SIMD operations exposed to the web are under active development within WebAssembly, with operations based on the SIMD.js operations." class="new" rel="nofollow">SIMD.Float64x2</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Float64x2$translate" style="opacity: 0.5;" title="此页面仍未被本地化, 期待您的翻译!" class="new" rel="nofollow">[我来译!]</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Int16x8" title="SIMD.js has been taken out of active development in TC39 and removed from Stage 3. It is not being pursued by web browsers for implementation anymore. SIMD operations exposed to the web are under active development within WebAssembly, with operations based on the SIMD.js operations." class="new" rel="nofollow">SIMD.Int16x8</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Int16x8$translate" style="opacity: 0.5;" title="此页面仍未被本地化, 期待您的翻译!" class="new" rel="nofollow">[我来译!]</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Int32x4" title="SIMD.js has been taken out of active development in TC39 and removed from Stage 3. It is not being pursued by web browsers for implementation anymore. SIMD operations exposed to the web are under active development within WebAssembly, with operations based on the SIMD.js operations." class="new" rel="nofollow">SIMD.Int32x4</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Int32x4$translate" style="opacity: 0.5;" title="此页面仍未被本地化, 期待您的翻译!" class="new" rel="nofollow">[我来译!]</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Int8x16" title="SIMD.js has been taken out of active development in TC39 and removed from Stage 3. It is not being pursued by web browsers for implementation anymore. SIMD operations exposed to the web are under active development within WebAssembly, with operations based on the SIMD.js operations." class="new" rel="nofollow">SIMD.Int8x16</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Int8x16$translate" style="opacity: 0.5;" title="此页面仍未被本地化, 期待您的翻译!" class="new" rel="nofollow">[我来译!]</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Uint16x8" title="SIMD.js has been taken out of active development in TC39 and removed from Stage 3. It is not being pursued by web browsers for implementation anymore. SIMD operations exposed to the web are under active development within WebAssembly, with operations based on the SIMD.js operations.">SIMD.Uint16x8</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Uint32x4" title="SIMD.js has been taken out of active development in TC39 and removed from Stage 3. It is not being pursued by web browsers for implementation anymore. SIMD operations exposed to the web are under active development within WebAssembly, with operations based on the SIMD.js operations." class="new" rel="nofollow">SIMD.Uint32x4</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Uint32x4$translate" style="opacity: 0.5;" title="此页面仍未被本地化, 期待您的翻译!" class="new" rel="nofollow">[我来译!]</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Uint8x16" title="SIMD.js has been taken out of active development in TC39 and removed from Stage 3. It is not being pursued by web browsers for implementation anymore. SIMD operations exposed to the web are under active development within WebAssembly, with operations based on the SIMD.js operations." class="new" rel="nofollow">SIMD.Uint8x16</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Uint8x16$translate" style="opacity: 0.5;" title="此页面仍未被本地化, 期待您的翻译!" class="new" rel="nofollow">[我来译!]</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Set" title="Set 对象允许你存储任何类型的唯一值，无论是原始值或者是对象引用。">Set</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer" title="SharedArrayBuffer 对象用来表示一个通用的，固定长度的原始二进制数据缓冲区，类似于 ArrayBuffer 对象。对象，但它们可以用来在共享内存上创建视图。与 ArrayBuffer 不同的是，SharedArrayBuffer 不能被分离。">SharedArrayBuffer</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String" title="String 全局对象是一个用于字符串或一个字符序列的构造函数。">String</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol" title="Technical review completed. Editorial review completed.">Symbol</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError" title="SyntaxError 对象代表尝试解析语法上不合法的代码的错误。">SyntaxError</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypeError" title="TypeError（类型错误） 对象用来表示值的类型非预期类型时发生的错误。">TypeError</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray" title="一个TypedArray 对象描述一个底层的二进制数据缓存区的一个类似数组(array-like)视图。事实上，没有名为 TypedArray的全局对象，也没有一个名为的 TypedArray构造函数。相反，有许多不同的全局对象，下面会列出这些针对特定元素类型的类型化数组的构造函数。在下面的页面中，你会找到一些不管什么类型都公用的属性和方法。">TypedArray</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/URIError" title="URIError 对象用来表示以一种错误的方式使用全局URI处理函数而产生的错误。">URIError</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array" title="The Uint16Array typed array represents an array of 16-bit unsigned integers in the platform byte order. If control over byte order is needed, use DataView instead. The contents are initialized to 0. Once established, you can reference elements in the array using the object&#39;s methods, or using standard array index syntax (that is, using bracket notation).">Uint16Array</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array" title="Uint32Array表示一个由基于平台字节序的32位无符号字节组成的数组.如果需要对字节顺序进行控制(译者注:即 littleEndian 或 bigEndian),请使用DataView代替.数组中每个元素的初始值都是0.一旦创建，你可以用对象的方法引用数组里的元素，或者使用标准的数组索引语法（即，使用中括号）。">Uint32Array</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array" title="Uint8Array 数组类型表示一个8位无符号整型数组，创建时内容被初始化为0。创建完后，可以以对象的方式或使用数组下标索引的方式引用数组中的元素。">Uint8Array</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray" title="Uint8ClampedArray（8位无符号整型固定数组） 类型化数组表示一个由值固定在0-255区间的8位无符号整型组成的数组；如果你指定一个在 [0,255] 区间外的值，它将被替换为0或255；如果你指定一个非整数，那么它将被设置为最接近它的整数。（数组）内容被初始化为0。一旦（数组）被创建，你可以使用对象的方法引用数组里的元素，或使用标准的数组索引语法（即使用方括号标记）。">Uint8ClampedArray</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/WeakMap" title="WeakMap 对象是一组键/值对的集合，其中的键是弱引用的。其键必须是对象，而值可以是任意的。">WeakMap</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/WeakSet" title="WeakSet 对象允许你将弱保持对象存储在一个集合中。">WeakSet</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly" title="WebAssemblyJavaScript 对象是所有 WebAssembly 相关功能的命名空间。">WebAssembly</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURI" title="decodeURI() 函数解码一个由encodeURI 先前创建的统一资源标识符（URI）或类似的例程。">decodeURI()</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent" title="decodeURIComponent() 方法用于解码由 encodeURIComponent 方法或者其它类似方法编码的部分统一资源标识符（URI）。">decodeURIComponent()</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURI" title="encodeURI()  函数通过将特定字符的每个实例替换为一个、两个、三或四转义序列来对统一资源标识符 (URI) 进行编码 (该字符的 UTF-8 编码仅为四转义序列)由两个 &quot;代理&quot; 字符组成)。">encodeURI()</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" title="encodeURIComponent()是对统一资源标识符（URI）的组成部分进行编码的方法。它使用一到四个转义序列来表示字符串中的每个字符的UTF-8编码（只有由两个Unicode代理区字符组成的字符才用四个转义字符编码）。">encodeURIComponent()</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/escape" title="废弃的 escape() 方法生成新的由十六进制转义序列替换的字符串. 使用 encodeURI 或 encodeURIComponent 代替.">escape()</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/eval" title="执行指定代码之后的返回值。如果返回值为空，返回undefined">eval()</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/isFinite" title="该全局 isFinite() 函数用来判断被传入的参数值是否为一个有限数值（finite number）。在必要情况下，参数会首先转为一个数值。">isFinite()</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/isNaN" title="isNaN() 函数用来确定一个值是否为NaN 。注：isNaN函数内包含一些非常有趣的规则；你也可以通过ECMAScript 2015/ES6 中定义的Number.isNaN()或者 可以使用typeof 来判断该值是否为一个非数字。">isNaN()</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/null" title="值 null 特指对象的值未设置。它是 JavaScript 基本类型 之一。">null</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/parseFloat" title="parseFloat() 函数解析一个字符串参数并返回一个浮点数。">parseFloat</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/parseInt" title="parseInt() 函数解析一个字符串参数，并返回一个指定基数的整数 (数学系统的基础)。">parseInt</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/undefined" title="undefined是全局对象的一个属性。也就是说，它是全局作用域的一个变量。undefined的最初值就是原始数据类型undefined。">undefined</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/unescape" title="已废弃的unescape() 方法计算生成一个新的字符串，其中的十六进制转义序列将被其表示的字符替换。上述的转义序列就像escape里介绍的一样。因为 unescape 已经废弃，建议使用 decodeURI或者decodeURIComponent 替代本方法。">unescape()</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/uneval" title="uneval() 函数创建一个代表对象的源代码的字符串。">uneval()</a></li></ol>
+  </li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>表达式和运算符</a>
+   <ol class="toggle-container" style="display: none;"><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators" title="算术运算符以数值（字面量或变量）作为其操作数，并返回一个单个数值。标准算术运算符是加法（+），减法（ - ），乘法（*）和除法（/）。">算术运算符</a></li><li><span class="sidebar-icon"><span title="This API has not been standardized."><i class="icon-warning-sign"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Array_comprehensions" title="数组推导式是一种 JavaScript 表达式语法，使用它，你可以在一个原有数组的基础上快速的构造出一个新的数组。但是它已经从标准和火狐中移除。不要用它！">数组推导式</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Assignment_Operators" title="赋值运算符（assignment operator）基于右值（right operand）的值，给左值（left operand）赋值。">赋值运算符</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators" title="按位操作符（Bitwise operators） 将其操作数（operands）当作32位的比特序列（由0和1组成），而不是十进制、十六进制或八进制数值。例如，十进制数9，用二进制表示则为1001。按位操作符操作数字的二进制形式，但是返回值依然是标准的JavaScript数值。">按位操作符</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Comma_Operator" title="">逗号操作符</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Comparison_Operators" title="JavaScript 有两种比较方式：严格比较运算符和转换类型比较运算符。对于严格比较运算符（===）来说，仅当两个操作数的类型相同且值相等为 true，而对于被广泛使用的比较运算符（==）来说，会在进行比较之前，将两个操作数转换成相同的类型。对于关系运算符（比如 &lt;=）来说，会先将操作数转为原始值，使它们类型相同，再进行比较运算。">比较操作符</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Conditional_Operator" title="条件（三元）运算符是 JavaScript 仅有的使用三个操作数的运算符。本运算符经常作为if语句的简短形式来使用。">条件运算符</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment" title="解构赋值语法是一个 Javascript 表达式，这使得可以将值从数组或属性从对象提取到不同的变量中。">解构赋值</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Expression_closures" title="表达式闭包是定义简单函数的一种便捷方式。">Expression closures</a></li><li><span class="sidebar-icon"><span title="This API has not been standardized."><i class="icon-warning-sign"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Generator_comprehensions" title="生成器推导语法是一种JavaScript表达式，它允许您基于现有的可迭代对象快速组合新的生成器函数。">Generator推导式</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Grouping" title="圆括号运算符( ) 用来控制表达式中的运算优先级。">圆括号运算符</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Legacy_generator_function" title="function 关键字可以用于在表达式中定义旧式的生成器函数。为使定义的函数为一个旧式的生成器函数，该函数的函数体中需要至少包含一个 yield 表达式。">旧式生成器函数</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Logical_Operators" title="下面是逻辑运算符的说明：">逻辑运算符</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Object_initializer" title="可以通过new Object()， Object.create()方法，或者使用字面量标记（初始化标记）初始化对象。 一个对象初始化器，由花括号/大括号 ({}) 包含的一个由零个或多个对象属性名和其关联值组成的一个逗号分隔的列表构成。">对象初始化</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence" title="运算符的优先级决定了表达式中运算执行的先后顺序，优先级高的运算符最先被执行。">运算符优先级</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/%E7%AE%A1%E9%81%93%E6%93%8D%E4%BD%9C%E7%AC%A6" title="试验性的管道操作符 |&gt; （目前在 stage 1阶段）允许以一种易读的方式去对函数链式调用。本质上来说，管道操作符是单参数函数调用的语法糖，它允许你以&#39;%21&#39; |&gt; decodeURI来替代decodeURI(&#39;%21&#39;)。">管道操作符</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Property_Accessors" title="属性访问器提供了两种方式用于访问一个对象的属性，它们分别是点号和方括号。">属性访问器</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Spread_syntax" title="The source for this interactive example is stored in a GitHub repository. If you&#39;d like to contribute to the interactive examples project, please clone https://github.com/mdn/interactive-examples and send us a pull request.">Spread syntax</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/async%E5%85%81%E8%AE%B8%E5%A3%B0%E6%98%8E%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%E4%B8%BA%E4%B8%80%E4%B8%AA%E5%8C%85%E5%90%AB%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C%E7%9A%84%E5%87%BD%E6%95%B0" title="async function 关键字用来在表达式中定义异步函数。当然，你也可以用 异步函数语句 来定义。">async function expression</a></li><li><span class="sidebar-icon"><span title="这是一个实验性的 API，请尽量不要在生产环境中使用它。"><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/await" title="await  操作符用于等待一个Promise 对象。它只能在异步函数 async function 中使用。">await</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/class" title="类表达式是用来定义类的一种语法。和函数表达式相同的一点是，类表达式可以是命名也可以是匿名的。如果是命名类表达式，这个名字只能在类体内部才能访问到。JavaScript 的类也是基于原型继承的。">类表达式</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/delete" title="delete 操作符用于删除对象的某个属性；如果没有指向这个属性的引用，那它最终会被释放。">delete 操作符</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/function" title="function 关键字可以用来在一个表达式中定义一个函数。">函数表达式</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/function*" title="function*关键字可以在表达式内部定义一个生成器函数。">function* 表达式</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/in" title="如果指定的属性在指定的对象或其原型链中，则in 运算符返回true。">in</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/instanceof" title="instanceof 运算符用来测试一个对象在其原型链中是否存在一个构造函数的 prototype 属性。">instanceof</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new" title="new 运算符创建一个用户定义的对象类型的实例或具有构造函数的内置对象的实例。">new运算符</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/new.target" title="new.target语法由一个关键字&quot;new&quot;，一个点，和一个属性名&quot;target&quot;组成。通常&quot;new.&quot;的作用是提供属性访问的上下文，但这里&quot;new.&quot;其实不是一个真正的对象。不过在构造方法调用中，new.target指向被new调用的构造函数，所以&quot;new.&quot;成为了一个虚拟上下文。">new.target</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/super" title="super关键字用于访问和调用一个对象的父对象上的函数。">super</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/this" title="与其他语言相比，函数的 this 关键字在 JavaScript 中的表现略有不同，此外，在严格模式和非严格模式之间也会有一些差别。">this</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/typeof" title="typeof操作符返回一个字符串，表示未经计算的操作数的类型。">typeof</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/void" title="void 运算符 对给定的表达式进行求值，然后返回 undefined。">void 运算符</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/yield" title="yield 关键字用来暂停和恢复一个生成器函数（(function* 或遗留的生成器函数）。">yield</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/yield*" title="yield* 表达式用于委托给另一个generator 或可迭代对象。">yield*</a></li></ol>
+  </li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>语句和声明</a>
+   <ol class="toggle-container" style="display: none;"><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/Legacy_generator_function" title="遗留的生成器函数语句 使用特殊参数声明遗留的生成器函数。">遗留的生成器函数</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/async_function" title="当调用一个 async 函数时，会返回一个 Promise 对象。当这个 async 函数返回一个值时，Promise 的 resolve 方法会负责传递这个值；当 async 函数抛出异常时，Promise 的 reject 方法也会传递这个异常值。">async function</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/block" title="块语句（或其他语言的复合语句）用于组合零个或多个语句。该块由一对大括号界定，可以是labelled：">block</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/break" title="break 语句中止当前循环，switch语句或label 语句，并把程序控制流转到紧接着被中止语句后面的语句。">break</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/class" title="class 声明创建一个基于原型继承的具有给定名称的新类。">class</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/const" title="常量是块级作用域，很像使用 let 语句定义的变量。常量的值不能通过重新赋值来改变，并且不能重新声明。">const</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/continue" title="continue 语句结束当前（或标签）的循环语句的本次迭代，并继续执行循环的下一次迭代。">continue</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/debugger" title="debugger 语句调用任何可用的调试功能，例如设置断点。 如果没有调试功能可用，则此语句不起作用。">debugger</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/default" title="default 关键字可以在 JavaScript 的两种情况下使用：在 switch ，或 export 中。">default</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/do...while" title="do...while 语句创建一个执行指定语句的循环，直到condition值为 false。在执行statement 后检测condition，所以指定的statement至少执行一次。">do...while</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/Empty" title="空语句用来表明没有语句，尽管 JavaScript 语法希望有语句。">empty</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/export" title="有两种不同的导出方式，每种方式对应于上述的一种语法：">export</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for" title="for 语句用于创建一个循环，它包含了三个可选的表达式，三个可选的表达式包围在圆括号中并由分号分隔， 后跟一个在循环中执行的语句（通常是一个块语句）。">for</a></li><li><span class="sidebar-icon"><span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></span><span class="sidebar-icon"><span title="This is an obsolete API and is no longer guaranteed to work."><i class="icon-trash"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for_each...in" title="使用一个变量迭代一个对象的所有属性值,对于每一个属性值,有一个指定的语句块被执行.">for each...in</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...in" title="for...in语句以任意顺序遍历一个对象的可枚举属性。对于每个不同的属性，语句都会被执行。">for...in</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...of" title="for...of语句在可迭代对象（包括 Array，Map，Set，String，TypedArray，arguments 对象等等）上创建一个迭代循环，调用自定义迭代钩子，并为每个不同属性的值执行语句。">for...of</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/function" title="函数声明定义一个具有指定参数的函数。">function</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/function*" title="function* 这种声明方式(function关键字后跟一个星号）会定义一个生成器函数 (generator function)，它返回一个  Generator  对象。">function*</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/if...else" title="当指定条件为真，if 语句会执行一段语句。如果条件为假，则执行另一段语句。">if...else</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import" title="import语句用于导入由另一个模块导出的绑定。">import</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/label" title="标记语句可以和 break 或 continue 语句一起使用。标记就是在一条语句前面加个可以引用的标识符。">label</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/let" title="let允许你声明一个作用域被限制在块级中的变量、语句或者表达式。与var关键字不同的是，它声明的变量只能是全局或者整个函数块的。">let</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/return" title="return语句终止函数的执行，并返回一个指定的值给函数调用者。">return</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/switch" title="switch 语句评估一个表达式，将表达式的值与case子句匹配，并执行与该情况相关联的语句。">switch</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/throw" title="throw语句用来抛出一个用户自定义的异常。当前函数的执行将被停止（throw之后的语句将不会执行），并且控制将被传递到调用堆栈中的第一个catch块。如果调用者函数中没有catch块，程序将会终止。">throw</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/try...catch" title="try...catch语句将能引发错误的代码放在try块中，并且对应一个响应，然后有异常被抛出。">try...catch</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/var" title="variable 语句声明了一个变量，可选地将其初始化为一个值。">var</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/while" title="while 语句可以在某个条件表达式为真的前提下，循环执行指定的一段代码，直到那个表达式不为真时结束循环。">while</a></li><li><span class="sidebar-icon"><span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></span><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/with" title="JavaScript查找某个未使用命名空间的变量时，会通过作用域链来查找，作用域链是跟执行代码的context或者包含这个变量的函数有关。&#39;with&#39;语句將某个对象添加的作用域链的顶部，如果在statement中有某个未使用命名空间的变量，跟作用域链中的某个属性同名，则这个变量将指向这个属性值。如果沒有同名的属性，则将拋出ReferenceError异常。">with</a></li></ol>
+  </li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>函数</a>
+   <ol class="toggle-container" style="display: none;"><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments" title="arguments 是一个对应于传递给函数的参数的类数组对象。">Arguments 对象</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Arrow_functions" title="箭头函数表达式的语法比函数表达式更短，并且不绑定自己的this，arguments，super或 new.target。这些函数表达式最适合用于非方法函数，并且它们不能用作构造函数。">箭头函数</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Default_parameters" title="函数默认参数允许在没有值或undefined被传入时使用默认形参。">默认参数值</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Method_definitions" title="从ECMAScript 2015开始，在对象初始器中引入了一种更简短定义方法的语法，这是一种把方法名直接赋给函数的简写方式。">方法的定义</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Rest_parameters" title="剩余参数语法允许我们将一个不定数量的参数表示为一个数组。">剩余参数</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/get" title="get语法将对象属性绑定到查询该属性时将被调用的函数。">getter</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/set" title="当尝试设置属性时，set语法将对象属性绑定到要调用的函数。">setter</a></li></ol>
+  </li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>Classes</a>
+   <ol class="toggle-container" style="display: none;"><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes/constructor" title="构造函数 constructor 是用于创建和初始化类中创建的一个对象的一种特殊方法。">构造方法</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes/extends" title="extends关键字用于类声明或者类表达式中，以创建一个类，该类是另一个类的子类。">extends</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes/static" title="static 关键字为一个类定义了一个静态方法。">static</a></li></ol>
+  </li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>Errors</a>
+   <ol class="toggle-container" style="display: none;"><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Property_access_denied" title="错误.">Error: Permission denied to access property "x"</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Too_much_recursion" title="内部错误.">InternalError: too much recursion</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Not_a_codepoint" title="RangeError">RangeError: argument is not a valid code point</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Invalid_array_length" title="RangeError">RangeError: invalid array length</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Invalid_date" title="RangeError">RangeError: invalid date</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Precision_range" title="RangeError">RangeError: precision is out of range</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Bad_radix" title="RangeError">RangeError: radix must be an integer</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Resulting_string_too_large" title="RangeError">RangeError: repeat count must be less than infinity</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Negative_repetition_count" title="RangeError">RangeError: repeat count must be non-negative</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Not_defined" title="ReferenceError.">ReferenceError: "x" is not defined</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Undeclared_var" title="仅在严格模式中出现 ReferenceError 警告。">ReferenceError: assignment to undeclared variable "x"</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Cant_access_lexical_declaration_before_init" title="ReferenceError">ReferenceError: can't access lexical declaration`X' before initialization</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Deprecated_caller_or_arguments_usage" title="仅在严格模式下出现的 ReferenceError 警告。JavaScript 的执行将不会停止。">ReferenceError: deprecated caller or arguments usage</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Invalid_assignment_left-hand_side" title="ReferenceError.">ReferenceError: invalid assignment left-hand side</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Undefined_prop" title="仅在 strict mode 下出现 ReferenceError 警告。">ReferenceError: reference to undefined property "x"</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Deprecated_octal" title="语法错误（SyntaxError ），只出现于严格模式下。">SyntaxError: "0"-prefixed octal literals and octal escape seq. are deprecated</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Strict_Non_Simple_Params" title="SyntaxError.">SyntaxError: "use strict" not allowed in function with non-simple parameters</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Reserved_identifier" title="SyntaxError">SyntaxError: "x" is a reserved identifier</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/JSON_bad_parse" title="SyntaxError">SyntaxError: JSON.parse: bad parsing</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Malformed_formal_parameter" title="SyntaxError">SyntaxError: Malformed formal parameter</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Unexpected_token" title="SyntaxError">SyntaxError: Unexpected token</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Deprecated_source_map_pragma" title="SyntaxError 的警告。不会终止 JavaScript 的执行。">SyntaxError: Using //@ to indicate sourceURL pragmas is deprecated. Use //# instead</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Invalid_for-of_initializer" title="SyntaxError">SyntaxError: a declaration in the head of a for-of loop can't have an initializer</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Delete_in_strict_mode" title="SyntaxError 仅出现在严格模式下。">SyntaxError: applying the 'delete' operator to an unqualified name is deprecated</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Invalid_for-in_initializer" title="该 SyntaxError 只出现于严格模式下。">SyntaxError: for-in loop head declarations may not have initializers</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Unnamed_function_statement" title="SyntaxError">SyntaxError: function statement requires a name</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Identifier_after_number" title="SyntaxError">SyntaxError: identifier starts immediately after numeric literal</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Illegal_character" title="SyntaxError">SyntaxError: illegal character</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Bad_regexp_flag" title="语法错误.">SyntaxError: invalid regular expression flag "x"</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Missing_parenthesis_after_argument_list" title="SyntaxError.">SyntaxError: missing ) after argument list</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Missing_parenthesis_after_condition" title="SyntaxError">SyntaxError: missing ) after condition</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Missing_colon_after_property_id" title="SyntaxError">SyntaxError: missing : after property id</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Missing_semicolon_before_statement" title="SyntaxError.">SyntaxError: missing ; before statement</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Missing_initializer_in_const" title="SyntaxError">SyntaxError: missing = in const declaration</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Missing_bracket_after_list" title="SyntaxError.">SyntaxError: missing ] after element list</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Missing_formal_parameter" title="SyntaxError">SyntaxError: missing formal parameter</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Missing_name_after_dot_operator" title="SyntaxError">SyntaxError: missing name after . operator</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/No_variable_name" title="SyntaxError">SyntaxError: missing variable name</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Missing_curly_after_function_body" title="SyntaxError">SyntaxError: missing } after function body</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Missing_curly_after_property_list" title="SyntaxError">SyntaxError: missing } after property list</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Redeclared_parameter" title="SyntaxError">SyntaxError: redeclaration of formal parameter "x"</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Bad_return_or_yield" title="SyntaxError.">SyntaxError: return not in function</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Equal_as_assign" title="SyntaxError 只在严格模式下会出现的警告。">SyntaxError: test for equality (==) mistyped as assignment (=)?</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Unterminated_string_literal" title="SyntaxError">SyntaxError: unterminated string literal</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/No_properties" title="TypeError.">TypeError: "x" has no properties</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Unexpected_type" title="TypeError.">TypeError: "x" is (not) "y"</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Not_a_constructor" title="TypeError">TypeError: "x" is not a constructor</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Not_a_function" title="TypeError">TypeError: "x" is not a function</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/No_non-null_object" title="TypeError">TypeError: "x" is not a non-null object</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Read-only" title="TypeError">TypeError: "x" is read-only</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/More_arguments_needed" title="TypeError.">TypeError: More arguments needed</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Reduce_of_empty_array_with_no_initial_value" title="TypeError" class="new" rel="nofollow">TypeError: Reduce of empty array with no initial value</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Reduce_of_empty_array_with_no_initial_value$translate" style="opacity: 0.5;" title="此页面仍未被本地化, 期待您的翻译!" class="new" rel="nofollow">[我来译!]</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Dead_object" title="TypeError">TypeError: can't access dead object</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Cant_define_property_object_not_extensible" title="TypeError">TypeError: can't define property "x": "obj" is not extensible</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Non_configurable_array_element" title="TypeError">TypeError: can't delete non-configurable array element</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Cant_redefine_property" title="TypeError">TypeError: can't redefine non-configurable property "x"</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/in_operator_no_object" title="TypeError">TypeError: invalid 'in' operand "x"</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value" title="TypeError">TypeError: cyclic object value</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/invalid_right_hand_side_instanceof_operand" title="TypeError">TypeError: invalid 'instanceof' operand 'x'</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Array_sort_argument" title="TypeError">TypeError: invalid Array.prototype.sort argument</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Typed_array_invalid_arguments" title="TypeError">TypeError: invalid arguments</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Invalid_const_assignment" title="TypeError">TypeError: invalid assignment to const "x"</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Cant_delete" title="TypeError 只出现在严格模式下。">TypeError: property "x" is non-configurable and can't be deleted</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Getter_only" title="仅在严格模式下报 TypeError 错误。">TypeError: setting getter-only property "x"</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Var_hides_argument" title="TypeError 警告仅仅在 严格模式下 出现。">TypeError: variable "x" redeclares argument</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Malformed_URI" title="URIError">URIError: malformed URI sequence</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Already_has_pragma" title="一个警告。JavaScript 的执行不会中止。">Warning: -file- is being assigned a //# sourceMappingURL, but already has one</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Bad_octal" title="仅在 strict mode 下出现 SyntaxError 警告。">SyntaxError: "x" is not a legal ECMA-262 octal constant</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Deprecated_toLocaleFormat" title="警告。JavaScript 引擎不会停止运行。">Warning: Date.prototype.toLocaleFormat is deprecated</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/For-each-in_loops_are_deprecated" title="警告">Warning: JavaScript 1.6's for-each-in loops are deprecated</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Deprecated_String_generics" title="警告。JavaScript 引擎不会停止运行。">Warning: String.x is deprecated; use String.prototype.x instead</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Deprecated_expression_closures" title="警告。JavaScript 引擎不会停止运行。">Warning: expression closures are deprecated</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Stmt_after_return" title="警告">Warning: unreachable code after return statement</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Errors/Called_on_incompatible_type" title="TypeError">X.prototype.y called on incompatible type</a></li></ol>
+  </li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>更多</a>
+   <ol class="toggle-container" style="display: none;">
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/JavaScript_technologies_overview">JavaScript 知识概要</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Lexical_grammar">词法文法</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Data_structures">JavaScript 数据结构</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Enumerability_and_ownership_of_properties">属性的可枚举性和所有权</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols">Iteration protocols</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode">严格模式</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode/Transitioning_to_strict_mode">切换到严格模式</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Template_literals" class="new" rel="nofollow">模板字符串</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Deprecated_and_obsolete_features">已废弃的特性</a></li>
+   </ol>
+  </li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>New in JavaScript</a>
+   <ol class="toggle-container" style="display: none;"><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_6_support_in_Mozilla" title="">Mozilla对ECMAScript 6的支持</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_5_support_in_Mozilla" title="ECMAScript 5.1, an older version of the standard upon which JavaScript is based, was approved in June 2011.">ECMAScript 5 support in Mozilla</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/ECMAScript_7_support_in_Mozilla" title="下一代ECMAScript 是指在ECMAScript 6 (ES2015)被推出后的 ECMA-262标准的新特性(通常被称为 JavaScript). 即使在ECMAScript 6 于2015年6月17日完成之前，新的特性也早已在提议中. 你可以在 tc39/ecma262 这个仓库中看见最新版的提议.">Mozilla对下一代ECMAScript 的支持</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/Firefox_JavaScript_changelog" title="下面是Firefox发布版本的JavaScript日志更新情况。">Firefox中的JavaScript更新日志</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/1.1" title="下面介绍的是JavaScript从Netscape Navigator 2.0到3.0的更新日志。旧的Netscape文档请参考&quot;第1版之后新增的特性&quot;。Netscape Navigator 3.0在1996年8月19发布，是支持JavaScript的浏览器的第二个主要的版本。">JavaScript 1.1的新特性</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/1.2" title="下面介绍的是JavaScript从Netscape Navigator 3.0到4.0的更新日志。旧的Netscape文档可以在archive.org上面找到。Netscape Navigator 4.0在1997年6月11日发布，它是是支持JavaScript的浏览器的第三个主要的版本。">JavaScript 1.2的新特性</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/1.3" title="下面介绍的是JavaScript从Netscape Navigator 4.0到4.5的更新日志。旧的Netscape文档可以在archive.org上面找到。Netscape Navigator 4.5是在1998年10月19日发布的。">JavaScript 1.3的新特性</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/1.4" title="下面是 JavaScript 1.4 的更新记录，它只可用于 1999 年发布的 Netscape 服务端 JavaScript。 旧的 Netscape 文档可在 archive.org 找到。">JavaScript 1.4的新特性</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/1.5" title="以下为JavaScript 1.5 的更新日志。该版本包含在发行于2000年11月14日的Netscape Navigator 6.0中，也在后续的的Netscape Navigator版本和Firefox 1.0中使用。你可以拿JavaScript 1.5 和JScript version 5.5，Internet Explorer 5.5进行比较，后者发行于2000年7月。相应的ECMA 标准是 ECMA-262 Edition 3版 (自1999年12月)。">JavaScript 1.5 的新特性</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/1.6" title="">JavaScript 1.6 的新特性</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/1.7" title="">JavaScript 1.7 的新特性</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/1.8" title="以下为JavaScript 1.8的更新日志。JavaScript 1.8 是 Gecko 1.9（已合并在 Firefox 3 中）的一部分。参见 bug 380236 以跟踪 JavaScript 1.8。">New in JavaScript 1.8</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/1.8.1" title="下面是JavaScript 1.8.1 的更新内容. 该版本已包含在 Firefox 3.5 中.">JavaScript 1.8.1 的新特性</a></li><li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/New_in_JavaScript/1.8.5" title="下面的内容是JavaScript 1.8.5的更新记录. 该版本已包含在Firefox 4中.">JavaScript 1.8.5 的新特性</a></li></ol>
+  </li>
+  <li><strong><a href="https://developer.mozilla.org/zh-CN/docs/MDN">文档:</a></strong></li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>常用列表</a>
+   <ol class="toggle-container" style="display: none;">
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Index">全部页面索引</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Methods_Index">方法索引</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Properties_Index">属性索引</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/tag/JavaScript">拥有 "JavaScript" 标签的页面</a></li>
+   </ol>
+  </li>
+  <li data-default-state="closed" class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Memory_Management#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i>贡献</a>
+   <ol class="toggle-container" style="display: none;">
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/MDN/Doc_status/JavaScript">JavaScript 文档翻译状态</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/MDN">MDN 项目</a></li>
+   </ol>
+  </li>
+ </ol>
+
+  </div>
+                
+
+                <!-- approvals -->
+                
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div> <!-- ends "main-content" -->
+
+    
+      <div class="newsletter-box">
+        <div class="newsletter">
+    <form id="newsletterForm" class="newsletter-form nodisable" name="newsletter-form" action="https://www.mozilla.org/en-US/newsletter/" method="post">
+        <div class="newsletter-head">
+            <h2 class="newsletter-teaser">学习 Web 开发的最佳实践</h2>
+            <p class="newsletter-description">让 MDN 将最新、最棒的内容直接投递到您的邮箱。</p>
+            
+            <p class="newsletter-lang">目前仅提供英文版新闻报。</p>
+            
+        </div>
+
+        <div class="newsletter-fields">
+            <input type="hidden" id="fmt" name="fmt" value="H">
+            <input type="hidden" id="newsletterNewslettersInput" name="newsletters" value="app-dev">
+            <div id="newsletterErrors" class="newsletter-errors"></div>
+
+            <div id="newsletterEmail" class="form-group newsletter-group-email">
+                <label for="newsletterEmailInput" class="form-label offscreen">电子邮件地址</label>
+                <input type="email" id="newsletterEmailInput" name="email" class="form-input newsletter-input-email" required="" placeholder="you@example.com" size="30">
+            </div>
+
+            <div id="newsletterPrivacy" class="form-group form-group-agree newsletter-group-privacy hidden">
+                <input type="checkbox" id="newsletterPrivacyInput" name="privacy" required="">
+                <label for="newsletterPrivacyInput">
+                我接受 Mozilla 按照<a href="https://www.mozilla.org/privacy/">隐私政策</a>所述的方式处理我的信息。
+                </label>
+            </div>
+            <div id="newsletterSubmit" class="newsletter-group-submit">
+                <button id="newsletter-submit" type="submit" class="button neutral newsletter-submit">
+                    立即注册<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
+    <path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"></path>
+</svg>
+                </button>
+            </div>
+        </div>
+    </form>
+    <div id="newsletterThanks" class="newsletter-thanks hidden">
+        <h2>谢谢！请检查您的收件箱以确认您的订阅。</h2>
+        <p>如果您以前未确认过订阅 Mozilla 相关的新闻简报，您可能必须这样做。请检查您的收件箱或垃圾邮件箱并找到我们发给您的电子邮件。
+        </p>
+    </div>
+    <button id="newsletterHide" type="button" class="only-icon newsletter-hide">
+        <span>隐藏新闻报注册</span>
+        <svg class="icon icon-close" xmlns="http://www.w3.org/2000/svg" width="22" height="28" viewBox="0 0 22 28" aria-hidden="true">
+    <path d="M20.281 20.656c0 .391-.156.781-.438 1.062l-2.125 2.125c-.281.281-.672.438-1.062.438s-.781-.156-1.062-.438L11 19.249l-4.594 4.594c-.281.281-.672.438-1.062.438s-.781-.156-1.062-.438l-2.125-2.125c-.281-.281-.438-.672-.438-1.062s.156-.781.438-1.062L6.751 15l-4.594-4.594c-.281-.281-.438-.672-.438-1.062s.156-.781.438-1.062l2.125-2.125c.281-.281.672-.438 1.062-.438s.781.156 1.062.438L11 10.751l4.594-4.594c.281-.281.672-.438 1.062-.438s.781.156 1.062.438l2.125 2.125c.281.281.438.672.438 1.062s-.156.781-.438 1.062L15.249 15l4.594 4.594c.281.281.438.672.438 1.062z"></path>
+</svg>
+    </button>
+</div>
+      </div>
+    
+
+  <menu type="context" id="edit-history-menu">
+    <menuitem data-action="/zh-CN/docs/Web/JavaScript/Memory_Management$edit" label="编辑页面"></menuitem>
+    <menuitem data-action="/zh-CN/docs/Web/JavaScript/Memory_Management$history" label="查看页面历史"></menuitem>
+  </menu>
+
+      </div>
+  </main>
+  <!-- Footer -->
+    <footer id="nav-footer" class="nav-footer">
+      <div class="center">
+          <a href="https://developer.mozilla.org/zh-CN/" class="nav-footer-logo">MDN Web 文档</a>
+<div class="footer-group footer-group-mdn">
+  <h2 class="footer-title">MDN</h2>
+  <ul class="footer-list">
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Web">网络技术</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/Learn">了解 Web 开发</a></li>
+    <li><a href="https://developer.mozilla.org/docs/MDN/About">关于 MDN</a></li>
+    <li><a href="https://developer.mozilla.org/zh-CN/docs/MDN/Feedback">反馈</a></li>
+    <li class="footer-social">
+        <a href="https://twitter.com/mozdevnet">
+            <svg class="icon icon-twitter" xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28" aria-hidden="true">
+    <title>Twitter</title>
+    <path d="M25.312 6.375a10.85 10.85 0 0 1-2.531 2.609c.016.219.016.438.016.656 0 6.672-5.078 14.359-14.359 14.359-2.859 0-5.516-.828-7.75-2.266.406.047.797.063 1.219.063 2.359 0 4.531-.797 6.266-2.156a5.056 5.056 0 0 1-4.719-3.5c.313.047.625.078.953.078.453 0 .906-.063 1.328-.172a5.048 5.048 0 0 1-4.047-4.953v-.063a5.093 5.093 0 0 0 2.281.641 5.044 5.044 0 0 1-2.25-4.203c0-.938.25-1.797.688-2.547a14.344 14.344 0 0 0 10.406 5.281 5.708 5.708 0 0 1-.125-1.156 5.045 5.045 0 0 1 5.047-5.047 5.03 5.03 0 0 1 3.687 1.594 9.943 9.943 0 0 0 3.203-1.219 5.032 5.032 0 0 1-2.219 2.781c1.016-.109 2-.391 2.906-.781z"></path>
+</svg>
+        </a>
+    </li>
+    <li class="footer-social">
+        <a href="https://github.com/mdn/">
+            <svg class="icon icon-github" xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28" aria-hidden="true">
+    <title>Github</title>
+    <path d="M12 2c6.625 0 12 5.375 12 12 0 5.297-3.437 9.797-8.203 11.391-.609.109-.828-.266-.828-.578 0-.391.016-1.687.016-3.297 0-1.125-.375-1.844-.812-2.219 2.672-.297 5.484-1.313 5.484-5.922 0-1.313-.469-2.375-1.234-3.219.125-.313.531-1.531-.125-3.187-1-.313-3.297 1.234-3.297 1.234a11.28 11.28 0 0 0-6 0S6.704 6.656 5.704 6.969c-.656 1.656-.25 2.875-.125 3.187-.766.844-1.234 1.906-1.234 3.219 0 4.594 2.797 5.625 5.469 5.922-.344.313-.656.844-.766 1.609-.688.313-2.438.844-3.484-1-.656-1.141-1.844-1.234-1.844-1.234-1.172-.016-.078.734-.078.734.781.359 1.328 1.75 1.328 1.75.703 2.141 4.047 1.422 4.047 1.422 0 1 .016 1.937.016 2.234 0 .313-.219.688-.828.578C3.439 23.796.002 19.296.002 13.999c0-6.625 5.375-12 12-12zM4.547 19.234c.031-.063-.016-.141-.109-.187-.094-.031-.172-.016-.203.031-.031.063.016.141.109.187.078.047.172.031.203-.031zm.484.532c.063-.047.047-.156-.031-.25-.078-.078-.187-.109-.25-.047-.063.047-.047.156.031.25.078.078.187.109.25.047zm.469.703c.078-.063.078-.187 0-.297-.063-.109-.187-.156-.266-.094-.078.047-.078.172 0 .281s.203.156.266.109zm.656.656c.063-.063.031-.203-.063-.297-.109-.109-.25-.125-.313-.047-.078.063-.047.203.063.297.109.109.25.125.313.047zm.891.391c.031-.094-.063-.203-.203-.25-.125-.031-.266.016-.297.109s.063.203.203.234c.125.047.266 0 .297-.094zm.984.078c0-.109-.125-.187-.266-.172-.141 0-.25.078-.25.172 0 .109.109.187.266.172.141 0 .25-.078.25-.172zm.906-.156c-.016-.094-.141-.156-.281-.141-.141.031-.234.125-.219.234.016.094.141.156.281.125s.234-.125.219-.219z"></path>
+</svg>
+        </a>
+    </li>
+  </ul>
+</div>
+
+          <a href="https://mozilla.org/" class="nav-footer-mozilla">Mozilla</a>
+<div class="footer-group footer-group-mozilla">
+  <h2 class="footer-title">Mozilla</h2>
+  <ul class="footer-list">
+    <li><a href="https://www.mozilla.org/about/">关于</a></li>
+    <li><a href="https://www.mozilla.org/contact/">联系我们</a></li>
+    <li><a href="https://donate.mozilla.org/?utm_source=developer.mozilla.org&amp;utm_medium=referral&amp;utm_content=footer">捐款</a></li>
+    <li><a href="https://www.mozilla.org/firefox/?utm_source=developer.mozilla.org&amp;utm_campaign=footer&amp;utm_medium=referral">Firefox</a></li>
+    <li class="footer-social">
+        <a href="https://twitter.com/mozilla">
+            <svg class="icon icon-twitter" xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28" aria-hidden="true">
+    <title>Twitter</title>
+    <path d="M25.312 6.375a10.85 10.85 0 0 1-2.531 2.609c.016.219.016.438.016.656 0 6.672-5.078 14.359-14.359 14.359-2.859 0-5.516-.828-7.75-2.266.406.047.797.063 1.219.063 2.359 0 4.531-.797 6.266-2.156a5.056 5.056 0 0 1-4.719-3.5c.313.047.625.078.953.078.453 0 .906-.063 1.328-.172a5.048 5.048 0 0 1-4.047-4.953v-.063a5.093 5.093 0 0 0 2.281.641 5.044 5.044 0 0 1-2.25-4.203c0-.938.25-1.797.688-2.547a14.344 14.344 0 0 0 10.406 5.281 5.708 5.708 0 0 1-.125-1.156 5.045 5.045 0 0 1 5.047-5.047 5.03 5.03 0 0 1 3.687 1.594 9.943 9.943 0 0 0 3.203-1.219 5.032 5.032 0 0 1-2.219 2.781c1.016-.109 2-.391 2.906-.781z"></path>
+</svg>
+        </a>
+    </li>
+    <li class="footer-social">
+        <a href="https://www.facebook.com/mozilla">
+            <svg class="icon icon-facebook" xmlns="http://www.w3.org/2000/svg" width="16" height="28" viewBox="0 0 16 28" aria-hidden="true">
+    <title>Facebook</title>
+    <path d="M14.984.187v4.125h-2.453c-1.922 0-2.281.922-2.281 2.25v2.953h4.578l-.609 4.625H10.25v11.859H5.469V14.14H1.485V9.515h3.984V6.109C5.469 2.156 7.891 0 11.422 0c1.687 0 3.141.125 3.563.187z"></path>
+</svg>
+        </a>
+    </li>
+    <li class="footer-social">
+        <a href="https://www.instagram.com/mozillagram/">
+            <svg class="icon icon-instagram" xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28" aria-hidden="true">
+    <title>Instagram</title>
+    <path d="M16 14c0-2.203-1.797-4-4-4s-4 1.797-4 4 1.797 4 4 4 4-1.797 4-4zm2.156 0c0 3.406-2.75 6.156-6.156 6.156S5.844 17.406 5.844 14 8.594 7.844 12 7.844s6.156 2.75 6.156 6.156zm1.688-6.406c0 .797-.641 1.437-1.437 1.437S16.97 8.39 16.97 7.594s.641-1.437 1.437-1.437 1.437.641 1.437 1.437zM12 4.156c-1.75 0-5.5-.141-7.078.484-.547.219-.953.484-1.375.906s-.688.828-.906 1.375c-.625 1.578-.484 5.328-.484 7.078s-.141 5.5.484 7.078c.219.547.484.953.906 1.375s.828.688 1.375.906c1.578.625 5.328.484 7.078.484s5.5.141 7.078-.484c.547-.219.953-.484 1.375-.906s.688-.828.906-1.375c.625-1.578.484-5.328.484-7.078s.141-5.5-.484-7.078c-.219-.547-.484-.953-.906-1.375s-.828-.688-1.375-.906C17.5 4.015 13.75 4.156 12 4.156zM24 14c0 1.656.016 3.297-.078 4.953-.094 1.922-.531 3.625-1.937 5.031s-3.109 1.844-5.031 1.937c-1.656.094-3.297.078-4.953.078s-3.297.016-4.953-.078c-1.922-.094-3.625-.531-5.031-1.937S.173 20.875.08 18.953C-.014 17.297.002 15.656.002 14s-.016-3.297.078-4.953c.094-1.922.531-3.625 1.937-5.031s3.109-1.844 5.031-1.937c1.656-.094 3.297-.078 4.953-.078s3.297-.016 4.953.078c1.922.094 3.625.531 5.031 1.937s1.844 3.109 1.937 5.031C24.016 10.703 24 12.344 24 14z"></path>
+</svg>
+        </a>
+    </li>
+  </ul>
+</div>
+
+          
+  
+    <form class="languages go" method="get" action="https://developer.mozilla.org/zh-CN/docs/Web">
+      <label for="language">其他语言：</label>
+      <select id="language" class="wiki-l10n" name="next" dir="ltr">
+        <option title="简体中文" data-locale="zh-CN" value="/zh-CN/docs/Web/JavaScript/Memory_Management" selected="">
+          中文 (简体) (zh-CN)
+        </option>
+        
+          <option title="英语 (美国)" data-locale="zh-CN" value="/en-US/docs/Web/JavaScript/Memory_Management">
+            English (US) (en-US)
+          </option>
+          <option title="孟加拉语 (孟加拉)" data-locale="zh-CN" value="/bn-BD/docs/Web/JavaScript/Memory_Management">
+            বাংলা (বাংলাদেশ) (bn-BD)
+          </option>
+          <option title="德语" data-locale="zh-CN" value="/de/docs/Web/JavaScript/Speicherverwaltung">
+            Deutsch (de)
+          </option>
+          <option title="西班牙语" data-locale="zh-CN" value="/es/docs/Web/JavaScript/Gestion_de_Memoria">
+            Español (es)
+          </option>
+          <option title="法语" data-locale="zh-CN" value="/fr/docs/Web/JavaScript/Gestion_de_la_m%C3%A9moire">
+            Français (fr)
+          </option>
+          <option title="印尼语" data-locale="zh-CN" value="/id/docs/Web/JavaScript/Memory_Management">
+            Bahasa Indonesia (id)
+          </option>
+          <option title="意大利语" data-locale="zh-CN" value="/it/docs/Web/JavaScript/Gestione_della_Memoria">
+            Italiano (it)
+          </option>
+          <option title="日语" data-locale="zh-CN" value="/ja/docs/Web/JavaScript/Memory_Management">
+            日本語 (ja)
+          </option>
+          <option title="朝鲜语" data-locale="zh-CN" value="/ko/docs/Web/JavaScript/Memory_Management">
+            한국어 (ko)
+          </option>
+          <option title="葡萄牙语 (巴西)" data-locale="zh-CN" value="/pt-BR/docs/Web/JavaScript/Memory_Management">
+            Português (do&nbsp;Brasil) (pt-BR)
+          </option>
+          <option title="葡萄牙语 (葡萄牙)" data-locale="zh-CN" value="/pt-PT/docs/Web/JavaScript/Gestao_Memoria">
+            Português (Europeu) (pt-PT)
+          </option>
+          <option title="俄语" data-locale="zh-CN" value="/ru/docs/Web/JavaScript/Memory_Management">
+            Русский (ru)
+          </option>
+          <option title="繁体中文" data-locale="zh-CN" value="/zh-TW/docs/Web/JavaScript/Memory_Management">
+            正體中文 (繁體) (zh-TW)
+          </option>
+      </select>
+      <noscript><button type="submit">转到</button></noscript>
+    </form>
+  
+
+
+          
+            <ul class="footer-tos">
+              <li><a href="https://www.mozilla.org/about/legal/terms/mozilla">条款</a></li>
+              <li><a href="https://www.mozilla.org/privacy/websites/">隐私</a></li>
+              <li><a href="https://www.mozilla.org/privacy/websites/#cookies">Cookie</a></li>
+            </ul>
+
+            <div id="license" class="contentinfo">
+              <p>© 2005-2018 Mozilla 及各贡献者</p> <p>内容可按<a href="https://developer.mozilla.org/en-US/docs/MDN/About#Copyrights_and_licenses">这些许可协议</a>使用。</p>
+            </div>
+          
+      </div>
+    </footer> 
+
+  <!-- site js -->
+  
+    
+    <!--[if lte IE 8]><script type="text/javascript" src="https://developer.mozilla.org/static/build/js/selectivizr.091e18cf669b.js" charset="utf-8"></script><![endif]-->
+
+    
+    <script src="./内存管理 - JavaScript _ MDN_files/javascript.9efd6dea1a10.js.下载"></script>
+    <script type="text/javascript" src="./内存管理 - JavaScript _ MDN_files/main.4bb983cfcbb8.js.下载" charset="utf-8"></script>
+    <script>
+    if (window.mdn && mdn.analytics) mdn.analytics.trackOutboundLinks();
+</script>
+    
+
+  
+
+    <script async="" type="text/javascript" src="./内存管理 - JavaScript _ MDN_files/wiki.c60705233ffd.js.下载" charset="utf-8"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+    <script async="" type="text/javascript" src="./内存管理 - JavaScript _ MDN_files/newsletter.7cd3274169f2.js.下载" charset="utf-8"></script>
+  
+
+
+
+</body></html>
