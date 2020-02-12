@@ -33,9 +33,6 @@
             run(){
                 console.log(`${this.name}能跑`);
             }
-            sayHi(){
-                console.log(`${this.name}能跑`);
-            }
         }
 
         // 创建对象的时候用法一样
@@ -46,10 +43,16 @@
         console.log(p2);
 
         
+        // 输出类的原型对象
         console.log(Person1.prototype);
         console.log(Person2.prototype);
-        
-        
+
+        p1.run();
+        p2.run();
+
+        console.log(typeof Person1);    // function
+        console.log(typeof Person2);    // function，类其实构造函数的另一种写法
+                
 
 
 

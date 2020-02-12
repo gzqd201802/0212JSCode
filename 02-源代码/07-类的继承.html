@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // ES6 类语法
+        class Person{
+            // Person 的构造函数
+            constructor(name, age){
+                this.name = name;
+                this.age = age;
+            }
+            // Person 原型对象上的方法
+            run(){
+                console.log(`${this.name}能跑`);
+            }
+        }
+
+        // Student 和 Person 相当于构造函数的名称
+        class Student extends Person{
+            // Student 自己的构造函数
+            constructor(name, age,number){
+                // 继承后的构造函数内部必须要调用 super()
+                // super() 用于继承父类的属性
+                super(name, age);
+                // 添加学号属性
+                this.number = number;
+            }
+            code(){
+                console.log(`学生${this.name}能写代码`);
+            }
+        }
+
+
+        const s1 = new Student('小白',18,666);
+        console.log(s1);
+        
+        s1.run();
+        s1.code();
+
+
+        
+    </script>
+</body>
+</html>
