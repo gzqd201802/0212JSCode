@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        // 作用域：变量/常量可以起作用的区域
+        // JS中，
+        //      1. 全局作用域 - Script 作用域，window对象的属性也是全局的
+        //      2. 局部作用域(函数作用域)
+        //      3. ES6新增块级作用域，let const 实现
+
+        debugger;
+
+        function func() {
+            let aa = 10;
+            console.log(aa);
+        }
+
+        func();
+
+        console.log(aa);    // 报错：aa is not defined
+        // 报错原因：
+        //   aa 是在函数内部作用域生效，在外面无法访问
+
+
+    </script>
+</body>
+
+</html>
